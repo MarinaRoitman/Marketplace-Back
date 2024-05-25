@@ -1,5 +1,7 @@
 package com.example.shoppear.marketplace.entity;
 
+import java.sql.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,17 +13,17 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Data
-@Table(name = "orders")
-public class Order {
+@Table(name = "Orden")
+public class Orden {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private Long count;
-
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private Usuario user;
+    @JoinColumn(name = "idUsuario")
+    private Usuario usuario;
+
+    @Column(name = "fecha")
+    private Date fecha;
+
 }
