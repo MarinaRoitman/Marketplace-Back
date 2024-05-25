@@ -1,18 +1,17 @@
 package com.example.shoppear.marketplace.service;
 
-public class CategoryService {
+import java.util.Optional;
 
-    public String getCategories() {
-        return new String();
-    }
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
-    public String getCategoryById(String categoryId) {
-        return new String();
-    }
+import com.example.shoppear.marketplace.entity.Category;
+import com.example.shoppear.marketplace.exceptions.CategoryDuplicateException;
 
-    public String createCategory(String entity) {
-        // TODO: process POST request
+public interface CategoryService {
+    public Page<Category> getCategories(PageRequest pageRequest);
 
-        return entity;
-    }
+    public Optional<Category> getCategoryById(Long categoryId);
+
+    public Category createCategory(String description) throws CategoryDuplicateException;
 }
