@@ -69,13 +69,13 @@ INSERT INTO `orden` VALUES (1,1,'2024-05-25'),(2,2,'2024-05-25'),(3,3,'2024-05-2
 UNLOCK TABLES;
 
 --
--- Table structure for table `ordenProducto`
+-- Table structure for table `ordenproducto`
 --
 
-DROP TABLE IF EXISTS `ordenProducto`;
+DROP TABLE IF EXISTS `ordenproducto`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `ordenProducto` (
+CREATE TABLE `ordenproducto` (
   `id` int NOT NULL AUTO_INCREMENT,
   `idProducto` int DEFAULT NULL,
   `idOrden` int DEFAULT NULL,
@@ -89,13 +89,13 @@ CREATE TABLE `ordenProducto` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ordenProducto`
+-- Dumping data for table `ordenproducto`
 --
 
-LOCK TABLES `ordenProducto` WRITE;
-/*!40000 ALTER TABLE `ordenProducto` DISABLE KEYS */;
-INSERT INTO `ordenProducto` VALUES (1,1,1,2),(2,7,1,1),(3,10,1,3),(4,15,2,2),(5,22,2,1),(6,28,2,1),(7,3,3,1),(8,12,3,2),(9,20,3,1),(10,8,4,1),(11,16,4,2),(12,23,4,1),(13,4,5,1),(14,14,5,1),(15,27,5,2);
-/*!40000 ALTER TABLE `ordenProducto` ENABLE KEYS */;
+LOCK TABLES `ordenproducto` WRITE;
+/*!40000 ALTER TABLE `ordenproducto` DISABLE KEYS */;
+INSERT INTO `ordenproducto` VALUES (1,1,1,2),(2,7,1,1),(3,10,1,3),(4,15,2,2),(5,22,2,1),(6,28,2,1),(7,3,3,1),(8,12,3,2),(9,20,3,1),(10,8,4,1),(11,16,4,2),(12,23,4,1),(13,4,5,1),(14,14,5,1),(15,27,5,2);
+/*!40000 ALTER TABLE `ordenproducto` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -157,7 +157,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Carolina','Guevara','caritoG@gmail.com','5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5','Av UADE 234'),(2,'Martina','Fede','Martis@gmail.com','20f3765880a5c269b747e1e906054a4b4a3a991259f1e16b5dde4742cec2319a','Av UADE 765'),(3,'Marina','Roitman','Maruu@gmail.com','f76043a74ec33b6aefbb289050faf7aa8d482095477397e3e63345125d49f527','Av UADE 765'),(4,'Joaquin','Jawer','jawerJ@gmail.com','79737ac46dad121166483e084a0727e5d6769fb47fa9b0b627eba4107e696078','Av UADE 8223');
+INSERT INTO `usuario` VALUES (1,'Carolina','Guevara','caritoG@gmail.com','827ccb0eea8a706c4c34a16891f84e7b','Av Uade 234'),(2,'Joaco','Jawer','joacojota@gmail.com','215d7d08f19a9dbf49988823348d783b','Juan el de la buena vista 725'),(3,'Maru','Roitman','marur@gmail.com','892a9944cf14665375630c06a1902152','Malabia 1600'),(4,'Marti','Fede','Martilamascapa@gmail.com','fceeb9b9d469401fe558062c4bd25954','Av Medrano 626');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -170,4 +170,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-29 11:03:15
+-- Dump completed on 2024-06-01 19:55:55
