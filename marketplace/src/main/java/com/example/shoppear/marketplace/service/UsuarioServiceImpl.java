@@ -4,13 +4,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
-import org.mindrot.jbcrypt.BCrypt;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.shoppear.marketplace.entity.Categoria;
 import com.example.shoppear.marketplace.entity.Usuario;
-import com.example.shoppear.marketplace.exceptions.CategoriaDuplicadaException;
 import com.example.shoppear.marketplace.exceptions.UsuarioExistenteException;
 import com.example.shoppear.marketplace.repository.UsuarioRepository;
 
@@ -27,7 +25,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario createUsuario(String nombre, String apellido, String mail, String contrasena, String direccion) throws UsuarioExistenteException {
         mail = mail.toLowerCase();
         List<Usuario> usuarios = usuarioRepository.findByMail(mail);
-        String contrasenaHash = BCrypt.hashpw(contrasena, BCrypt.gensalt());
+        String contrasenaHash = DigestUtils.md5Hex(contrasena);
         if (usuarios.isEmpty())
             return usuarioRepository.save(new Usuario(nombre, apellido, mail, contrasenaHash, direccion));
         throw new UsuarioExistenteException();
