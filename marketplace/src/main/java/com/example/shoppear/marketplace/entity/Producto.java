@@ -1,13 +1,17 @@
-package com.example.shoppear.marketplace.entity;
+/*package com.example.shoppear.marketplace.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import java.sql.Blob;
 
 @Data
 @Entity
@@ -26,7 +30,7 @@ public class Producto {
     private float precio;
 
     @Column
-    private String img;
+    private Blob img;
 
     @Column
     private int stock;
@@ -42,3 +46,4 @@ public class Producto {
     @JoinColumn(name = "idUsuario", referencedColumnName = "id")
     private Usuario usuario;
 }
+*/

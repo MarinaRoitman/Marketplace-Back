@@ -17,6 +17,18 @@ import lombok.Data;
 @Data
 @Entity
 public class Usuario {
+
+    public Usuario() {
+    }
+
+    public Usuario(String nombre, String apellido, String mail, String contrasena, String direccion) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.mail = mail;
+        this.contrasena = contrasena;
+        this.direccion = direccion;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,6 +48,6 @@ public class Usuario {
     @Column
     private String direccion;
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Producto> productos;
+    /*@OneToMany(mappedBy = "usuario")
+    private List<Producto> productos;*/
 }
