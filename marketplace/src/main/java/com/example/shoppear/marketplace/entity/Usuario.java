@@ -29,6 +29,15 @@ public class Usuario {
         this.direccion = direccion;
     }
 
+    public Usuario(Long id, String nombre, String apellido, String mail, String contrasena, String direccion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.mail = mail;
+        this.contrasena = contrasena;
+        this.direccion = direccion;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
