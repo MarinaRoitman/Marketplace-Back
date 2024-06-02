@@ -29,19 +29,13 @@ public class CategoriasController {
 
     @GetMapping
     public ResponseEntity<List<Categoria>> getCategorias() {
-            //return ResponseEntity.ok(categoryService.getCategories(PageRequest.of(0, Integer.MAX_VALUE)));
-            return ResponseEntity.ok(categoriaService.getCategorias());
+        return ResponseEntity.ok(categoriaService.getCategorias());
     }
 
 
     @GetMapping("/{categoryId}")
-    public ResponseEntity<Categoria> getCategoryById(@PathVariable Long categoryId) throws CategoriaInexistenteException {
-        Optional<Categoria> result = categoriaService.getCategoriaById(categoryId);
-        if (result.isPresent()){
-            return ResponseEntity.ok(result.get());
-        }else{
-            throw new CategoriaInexistenteException();
-        }
+    public ResponseEntity<Optional<Categoria>> getCategoryById(@PathVariable Long categoryId) throws CategoriaInexistenteException {
+        return ResponseEntity.ok(categoriaService.getCategoriaById(categoryId));
     }
 
     @PostMapping

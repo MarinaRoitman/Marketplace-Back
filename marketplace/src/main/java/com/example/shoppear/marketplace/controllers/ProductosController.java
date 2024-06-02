@@ -1,6 +1,7 @@
 package com.example.shoppear.marketplace.controllers;
 
 import java.io.IOException;
+import java.net.URI;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -10,19 +11,29 @@ import javax.sql.rowset.serial.SerialException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.shoppear.marketplace.entity.Producto;
+import com.example.shoppear.marketplace.entity.Usuario;
 import com.example.shoppear.marketplace.entity.dto.AgregarArchivoRequest;
 import com.example.shoppear.marketplace.entity.dto.ImageResponse;
+import com.example.shoppear.marketplace.entity.dto.ModificarUsuarioRequest;
+import com.example.shoppear.marketplace.entity.dto.NuevoProductoRequest;
+import com.example.shoppear.marketplace.entity.dto.NuevoUsuarioRequest;
 import com.example.shoppear.marketplace.entity.dto.ProductoResponse;
 import com.example.shoppear.marketplace.exceptions.ProductoInexistenteException;
 import com.example.shoppear.marketplace.exceptions.ProductoNoImgException;
+import com.example.shoppear.marketplace.exceptions.ProductoNoSePudoCrearException;
+import com.example.shoppear.marketplace.exceptions.UsuarioExistenteException;
+import com.example.shoppear.marketplace.exceptions.UsuarioInexistenteException;
 import com.example.shoppear.marketplace.service.ProductoService;
 import java.sql.Blob;
 import java.util.ArrayList;
@@ -83,5 +94,18 @@ public class ProductosController {
         } else {
             throw new ProductoInexistenteException();
         }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Object> deleteProducto(@RequestParam(name = "idProducto") Long idProducto) throws ProductoInexistenteException{
+        //Hace baja logica del producto, no lo borra realmente
+        Long result = productoService.deleteProducto(idProducto);
+        return ResponseEntity.created(URI.create("/productos/" + result)).body(result);
+    }
+
+    @PostMapping
+    public ResponseEntity<Object> createProducto(@RequestBody NuevoProductoRequest productoRequest) throws ProductoNoSePudoCrearException{
+        Producto result = productoService.createProducto(productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), productoRequest.getImg(), productoRequest.getStock(), productoRequest.getIdCategoria(), productoRequest.getDescuento(), productoRequest.getIdUsuario());
+        return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(result);
     }
 }

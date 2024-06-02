@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.shoppear.marketplace.entity.Categoria;
 import com.example.shoppear.marketplace.exceptions.CategoriaDuplicadaException;
+import com.example.shoppear.marketplace.exceptions.CategoriaInexistenteException;
 import com.example.shoppear.marketplace.repository.CategoriaRepository;
 
 @Service
@@ -21,8 +22,14 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public Optional<Categoria> getCategoriaById(Long categoriaId) {
-        return categoriaRepository.findById(categoriaId);
+    public Optional<Categoria> getCategoriaById(Long categoriaId) throws CategoriaInexistenteException {
+        Optional<Categoria> result = categoriaRepository.findById(categoriaId);
+        if (result.isPresent()){
+            return result;
+        }else{
+            throw new CategoriaInexistenteException();
+        }
+        //return categoriaRepository.findById(categoriaId);
     }
 
     public Categoria createCategoria(String nombre) throws CategoriaDuplicadaException {

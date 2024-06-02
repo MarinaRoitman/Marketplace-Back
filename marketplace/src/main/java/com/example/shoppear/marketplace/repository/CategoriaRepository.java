@@ -10,10 +10,7 @@ import com.example.shoppear.marketplace.entity.Categoria;
 
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
-
-    //@Query(value = "select c from categoria c where c.nombre = ?")
     List<Categoria> findByNombre(String nombre);
-
     Optional<Categoria> findById(Long id);
 
 }

@@ -64,18 +64,4 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new UsuarioLoginNoExitosoException();
         }
     }
-
-    /*@Override
-    public Optional<Usuario> getUsuarioById(Long usuarioId) {
-        // TODO Auto-generated method stub)
-        throw new UnsupportedOperationException("Unimplemented method 'getUsuarioById'");
-    }*/
-
-    /*public Usuario createCategoria(String nombre, String apellido, String mail, String contrasena, String direccion) {
-        nombre = nombre.toLowerCase();
-        List<Usuario> categorias = usuarioRepository.findByNombre(nombre);
-        if (categorias.isEmpty())
-            return usuarioRepository.save(new Categoria(nombre, apellido, mail, contrasena, direccion));
-        throw new CategoriaDuplicadaException();
-    }*/
 }

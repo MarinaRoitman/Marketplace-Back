@@ -17,6 +17,18 @@ public class Producto {
     public Producto() {
     }
 
+    public Producto(String nombre, String descripcion, float precio, Blob img, int stock, Categoria categoria, float descuento, Usuario usuario) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.img = img;
+        this.stock = stock;
+        this.categoria = categoria;
+        this.descuento = descuento;
+        this.usuario = usuario;
+        this.activo = true;
+    }
+
     public void setImg(Blob img){
         this.img = img;
     }
