@@ -1,10 +1,7 @@
-/*package com.example.shoppear.marketplace.entity;
+package com.example.shoppear.marketplace.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +13,14 @@ import java.sql.Blob;
 @Data
 @Entity
 public class Producto {
+    
+    public Producto() {
+    }
+
+    public void setImg(Blob img){
+        this.img = img;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,5 +50,6 @@ public class Producto {
     @ManyToOne
     @JoinColumn(name = "idUsuario", referencedColumnName = "id")
     private Usuario usuario;
+
+
 }
-*/

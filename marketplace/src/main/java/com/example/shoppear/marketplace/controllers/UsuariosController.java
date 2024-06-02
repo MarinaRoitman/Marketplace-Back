@@ -2,7 +2,6 @@ package com.example.shoppear.marketplace.controllers;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Locale.Category;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;

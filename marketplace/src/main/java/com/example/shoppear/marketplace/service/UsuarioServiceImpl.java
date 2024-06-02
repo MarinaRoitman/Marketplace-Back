@@ -1,6 +1,5 @@
 package com.example.shoppear.marketplace.service;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
