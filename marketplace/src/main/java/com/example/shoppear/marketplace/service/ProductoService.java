@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.sql.Blob;
 
-import com.example.shoppear.marketplace.entity.Categoria;
 import com.example.shoppear.marketplace.entity.Producto;
 import com.example.shoppear.marketplace.exceptions.ProductoInexistenteException;
 import com.example.shoppear.marketplace.exceptions.ProductoNoSePudoCrearException;

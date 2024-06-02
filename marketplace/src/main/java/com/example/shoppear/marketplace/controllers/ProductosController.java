@@ -53,7 +53,7 @@ public class ProductosController {
         List<Producto> prods = productoService.getProductosActivos();
         List<ProductoResponse> prodsDto = new ArrayList<ProductoResponse>();
         for(Producto p : prods){
-            prodsDto.add(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(p.getImg()).stock(p.getStock()).categoria(p.getCategoria()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
+            prodsDto.add(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(p.getImg()).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
         }
 
         return ResponseEntity.ok().body(prodsDto);
@@ -68,7 +68,7 @@ public class ProductosController {
         }else{
             throw new ProductoInexistenteException();
         }
-        return ResponseEntity.ok().body(ProductoResponse.builder().id(producto.getId()).nombre(producto.getNombre()).descripcion(producto.getDescripcion()).precio(producto.getPrecio()).img(producto.getImg()).stock(producto.getStock()).categoria(producto.getCategoria()).descuento(producto.getDescuento()).creadorUsername(producto.getUsuario().getUsername()).activo(producto.isActivo()).build());
+        return ResponseEntity.ok().body(ProductoResponse.builder().id(producto.getId()).nombre(producto.getNombre()).descripcion(producto.getDescripcion()).precio(producto.getPrecio()).img(producto.getImg()).stock(producto.getStock()).idCategoria(producto.getCategoria().getId()).descuento(producto.getDescuento()).creadorUsername(producto.getUsuario().getUsername()).activo(producto.isActivo()).build());
     }
 
     @PostMapping("/img")
@@ -105,7 +105,7 @@ public class ProductosController {
 
     @PostMapping
     public ResponseEntity<Object> createProducto(@RequestBody NuevoProductoRequest productoRequest) throws ProductoNoSePudoCrearException{
-        Producto result = productoService.createProducto(productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), productoRequest.getImg(), productoRequest.getStock(), productoRequest.getIdCategoria(), productoRequest.getDescuento(), productoRequest.getIdUsuario());
-        return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(result);
+        Producto p = productoService.createProducto(productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), productoRequest.getImg(), productoRequest.getStock(), productoRequest.getIdCategoria(), productoRequest.getDescuento(), productoRequest.getIdUsuario());
+        return ResponseEntity.created(URI.create("/productos/" + p.getId())).body(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(p.getImg()).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
     }
 }

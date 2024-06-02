@@ -16,7 +16,7 @@ public class ProductoResponse {
     private float precio;
     private Blob img;
     private int stock;
-    private Categoria categoria;
+    private Long idCategoria;
     private float descuento;
     private String creadorUsername;
     private boolean activo;
