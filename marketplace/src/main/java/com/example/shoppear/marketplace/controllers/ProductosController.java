@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.shoppear.marketplace.entity.Producto;
 import com.example.shoppear.marketplace.entity.dto.AgregarArchivoRequest;
 import com.example.shoppear.marketplace.entity.dto.ImageResponse;
+import com.example.shoppear.marketplace.entity.dto.ProductoResponse;
 import com.example.shoppear.marketplace.exceptions.ProductoInexistenteException;
 import com.example.shoppear.marketplace.exceptions.ProductoNoImgException;
 import com.example.shoppear.marketplace.service.ProductoService;
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.Base64;
 
 
@@ -36,8 +38,26 @@ public class ProductosController {
 
 
     @GetMapping
-    public ResponseEntity<List<Producto>> getProductos() {
-            return ResponseEntity.ok(productoService.getProductos());
+    public ResponseEntity<List<ProductoResponse>> getProductosActivos() {
+        List<Producto> prods = productoService.getProductosActivos();
+        List<ProductoResponse> prodsDto = new ArrayList<ProductoResponse>();
+        for(Producto p : prods){
+            prodsDto.add(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(p.getImg()).stock(p.getStock()).categoria(p.getCategoria()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
+        }
+
+        return ResponseEntity.ok().body(prodsDto);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ProductoResponse> getProductoById(@PathVariable Long id) throws ProductoInexistenteException {
+        Optional<Producto> productoOptional = productoService.getProductoById(id);
+        Producto producto;
+        if(productoOptional.isPresent()){
+            producto = productoOptional.get();
+        }else{
+            throw new ProductoInexistenteException();
+        }
+        return ResponseEntity.ok().body(ProductoResponse.builder().id(producto.getId()).nombre(producto.getNombre()).descripcion(producto.getDescripcion()).precio(producto.getPrecio()).img(producto.getImg()).stock(producto.getStock()).categoria(producto.getCategoria()).descuento(producto.getDescuento()).creadorUsername(producto.getUsuario().getUsername()).activo(producto.isActivo()).build());
     }
 
     @PostMapping("/img")

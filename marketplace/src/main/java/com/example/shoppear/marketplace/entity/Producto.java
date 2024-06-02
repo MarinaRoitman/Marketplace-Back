@@ -51,5 +51,6 @@ public class Producto {
     @JoinColumn(name = "idUsuario", referencedColumnName = "id")
     private Usuario usuario;
 
-
+    @Column
+    private boolean activo;
 }

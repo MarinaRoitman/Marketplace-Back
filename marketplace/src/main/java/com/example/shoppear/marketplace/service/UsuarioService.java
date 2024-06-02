@@ -11,9 +11,9 @@ import com.example.shoppear.marketplace.exceptions.UsuarioLoginNoExitosoExceptio
 public interface UsuarioService {
     public List<Usuario> getUsuarios();
 
-    public Usuario createUsuario(String nombre, String apellido, String mail, String contrasena, String direccion) throws UsuarioExistenteException;
+    public Usuario createUsuario(String nombre, String apellido, String mail, String contrasena, String direccion, String username) throws UsuarioExistenteException;
 
-    public Usuario modifyUsuario(Long id, String nombre, String apellido, String mail, String contrasena, String direccion) throws UsuarioInexistenteException;
+    public Usuario modifyUsuario(Long id, String nombre, String apellido, String mail, String contrasena, String direccion, String username) throws UsuarioInexistenteException;
 
     public Optional <Usuario> getUsuarioById(Long id) throws UsuarioInexistenteException;
 

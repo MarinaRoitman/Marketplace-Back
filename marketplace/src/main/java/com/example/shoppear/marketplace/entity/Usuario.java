@@ -15,21 +15,23 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String nombre, String apellido, String mail, String contrasena, String direccion) {
+    public Usuario(String nombre, String apellido, String mail, String contrasena, String direccion, String username) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.mail = mail;
         this.contrasena = contrasena;
         this.direccion = direccion;
+        this.username = username;
     }
 
-    public Usuario(Long id, String nombre, String apellido, String mail, String contrasena, String direccion) {
+    public Usuario(Long id, String nombre, String apellido, String mail, String contrasena, String direccion, String username) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.mail = mail;
         this.contrasena = contrasena;
         this.direccion = direccion;
+        this.username = username;
     }
 
     @Id
@@ -50,6 +52,9 @@ public class Usuario {
 
     @Column
     private String direccion;
+
+    @Column
+    private String username;
 
     /*@OneToMany(mappedBy = "usuario")
     private List<Producto> productos;*/

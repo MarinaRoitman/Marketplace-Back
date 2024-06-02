@@ -6,14 +6,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.shoppear.marketplace.entity.Categoria;
 import com.example.shoppear.marketplace.entity.dto.CategoriaRequest;
 import com.example.shoppear.marketplace.exceptions.CategoriaDuplicadaException;
+import com.example.shoppear.marketplace.exceptions.CategoriaInexistenteException;
 import com.example.shoppear.marketplace.service.CategoriaService;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -29,15 +32,17 @@ public class CategoriasController {
             //return ResponseEntity.ok(categoryService.getCategories(PageRequest.of(0, Integer.MAX_VALUE)));
             return ResponseEntity.ok(categoriaService.getCategorias());
     }
-/* 
-    @GetMapping("/{categoryId}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long categoryId) {
-        Optional<Category> result = categoryService.getCategoryById(categoryId);
-        if (result.isPresent())
-            return ResponseEntity.ok(result.get());
 
-        return ResponseEntity.noContent().build();
-    }*/
+
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<Categoria> getCategoryById(@PathVariable Long categoryId) throws CategoriaInexistenteException {
+        Optional<Categoria> result = categoriaService.getCategoriaById(categoryId);
+        if (result.isPresent()){
+            return ResponseEntity.ok(result.get());
+        }else{
+            throw new CategoriaInexistenteException();
+        }
+    }
 
     @PostMapping
     public ResponseEntity<Object> createCategoria(@RequestBody CategoriaRequest categoriaRequest)

@@ -21,14 +21,9 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public Optional<Categoria> getCategoryById(Long categoryId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCategoryById'");
+    public Optional<Categoria> getCategoriaById(Long categoriaId) {
+        return categoriaRepository.findById(categoriaId);
     }
-
-    /*public Optional<Category> getCategoryById(Long categoryId) {
-        return categoryRepository.findById(categoryId);
-    }/* */
 
     public Categoria createCategoria(String nombre) throws CategoriaDuplicadaException {
         nombre = nombre.toLowerCase();

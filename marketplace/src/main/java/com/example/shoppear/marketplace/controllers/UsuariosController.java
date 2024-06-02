@@ -47,7 +47,7 @@ public class UsuariosController {
     @PostMapping
     public ResponseEntity<Object> createUsuario(@RequestBody NuevoUsuarioRequest usuarioRequest)
             throws UsuarioExistenteException {
-        Usuario result = usuarioService.createUsuario(usuarioRequest.getNombre(), usuarioRequest.getApellido(), usuarioRequest.getMail(), usuarioRequest.getContrasena(), usuarioRequest.getDireccion());
+        Usuario result = usuarioService.createUsuario(usuarioRequest.getNombre(), usuarioRequest.getApellido(), usuarioRequest.getMail(), usuarioRequest.getContrasena(), usuarioRequest.getDireccion(), usuarioRequest.getUsername());
         return ResponseEntity.created(URI.create("/usuarios/" + result.getId())).body(result);
     }
 
@@ -60,7 +60,7 @@ public class UsuariosController {
 
     @PutMapping
     public ResponseEntity<Object> modifyUsuario(@RequestBody ModificarUsuarioRequest usuarioRequest) throws UsuarioInexistenteException{
-        Usuario result = usuarioService.modifyUsuario(usuarioRequest.getId(), usuarioRequest.getNombre(), usuarioRequest.getApellido(), usuarioRequest.getMail(), usuarioRequest.getContrasena(), usuarioRequest.getDireccion());
+        Usuario result = usuarioService.modifyUsuario(usuarioRequest.getId(), usuarioRequest.getNombre(), usuarioRequest.getApellido(), usuarioRequest.getMail(), usuarioRequest.getContrasena(), usuarioRequest.getDireccion(), usuarioRequest.getUsername());
         return ResponseEntity.created(URI.create("/usuarios/" + result.getId())).body(result);
     }
 }

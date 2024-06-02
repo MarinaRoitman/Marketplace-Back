@@ -1,6 +1,7 @@
 package com.example.shoppear.marketplace.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -13,7 +14,7 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     //@Query(value = "select c from categoria c where c.nombre = ?")
     List<Categoria> findByNombre(String nombre);
 
-    //List<Categoria> findAll();
+    Optional<Categoria> findById(Long id);
 
 }
 

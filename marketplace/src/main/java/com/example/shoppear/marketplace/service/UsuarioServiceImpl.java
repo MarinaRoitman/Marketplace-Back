@@ -23,22 +23,22 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public Usuario createUsuario(String nombre, String apellido, String mail, String contrasena, String direccion) throws UsuarioExistenteException {
+    public Usuario createUsuario(String nombre, String apellido, String mail, String contrasena, String direccion, String username) throws UsuarioExistenteException {
         mail = mail.toLowerCase();
         List<Usuario> usuarios = usuarioRepository.findByMail(mail);
         String contrasenaHash = DigestUtils.md5Hex(contrasena);
         if (usuarios.isEmpty())
-            return usuarioRepository.save(new Usuario(nombre, apellido, mail, contrasenaHash, direccion));
+            return usuarioRepository.save(new Usuario(nombre, apellido, mail, contrasenaHash, direccion, username));
         throw new UsuarioExistenteException();
     }
 
     @Override
-    public Usuario modifyUsuario(Long id, String nombre, String apellido, String mail, String contrasena, String direccion) throws UsuarioInexistenteException {
+    public Usuario modifyUsuario(Long id, String nombre, String apellido, String mail, String contrasena, String direccion, String username) throws UsuarioInexistenteException {
         mail = mail.toLowerCase();
         List<Usuario> usuarios = usuarioRepository.findByMail(mail);
         String contrasenaHash = DigestUtils.md5Hex(contrasena);
         if (usuarios.size() == 1)
-            return usuarioRepository.save(new Usuario(id, nombre, apellido, mail, contrasenaHash, direccion));
+            return usuarioRepository.save(new Usuario(id, nombre, apellido, mail, contrasenaHash, direccion, username));
         throw new UsuarioInexistenteException();
     }
 
@@ -67,7 +67,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     /*@Override
     public Optional<Usuario> getUsuarioById(Long usuarioId) {
-        // TODO Auto-generated method stub
+        // TODO Auto-generated method stub)
         throw new UnsupportedOperationException("Unimplemented method 'getUsuarioById'");
     }*/
 

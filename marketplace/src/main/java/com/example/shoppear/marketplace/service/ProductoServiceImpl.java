@@ -17,8 +17,8 @@ public class ProductoServiceImpl implements ProductoService{
     @Autowired
     private ProductoRepository productoRepository;
 
-    public List<Producto> getProductos() {
-        return productoRepository.findAll();
+    public List<Producto> getProductosActivos() {
+        return productoRepository.findByActivoTrue();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ProductoServiceImpl implements ProductoService{
     }
 
     @Override
-    public Producto createProducto(String nombre, String description, float precio, int stock) {
+    public Producto createProducto(String nombre, String description, float precio, int stock, boolean activo) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'createProducto'");
     }

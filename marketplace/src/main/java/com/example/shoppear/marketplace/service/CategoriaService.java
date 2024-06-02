@@ -10,7 +10,7 @@ import com.example.shoppear.marketplace.exceptions.CategoriaDuplicadaException;
 public interface CategoriaService {
     public List<Categoria> getCategorias();
 
-    public Optional<Categoria> getCategoryById(Long categoryId);
+    public Optional<Categoria> getCategoriaById(Long categoriaId);
 
     public Categoria createCategoria(String description) throws CategoriaDuplicadaException;
 }

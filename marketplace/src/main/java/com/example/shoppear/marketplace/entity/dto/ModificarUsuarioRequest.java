@@ -10,4 +10,5 @@ public class ModificarUsuarioRequest {
     private String mail;
     private String contrasena;
     private String direccion;
+    private String username;
 }

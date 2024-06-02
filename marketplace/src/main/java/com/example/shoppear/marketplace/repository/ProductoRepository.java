@@ -8,4 +8,5 @@ import com.example.shoppear.marketplace.entity.Producto;
 
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findByNombre(String nombre);
+    List<Producto> findByActivoTrue();
 }

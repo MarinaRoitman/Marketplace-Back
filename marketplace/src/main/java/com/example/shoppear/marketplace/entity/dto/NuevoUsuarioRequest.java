@@ -9,4 +9,5 @@ public class NuevoUsuarioRequest {
     private String mail;
     private String contrasena;
     private String direccion;
+    private String username;
 }

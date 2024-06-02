@@ -8,11 +8,11 @@ import com.example.shoppear.marketplace.entity.Producto;
 import com.example.shoppear.marketplace.exceptions.ProductoInexistenteException;
 
 public interface ProductoService {
-    public List<Producto> getProductos(); 
+    public List<Producto> getProductosActivos(); 
     
     public Optional<Producto> getProductoById(Long productoId) throws ProductoInexistenteException;
 
-    public Producto createProducto(String nombre, String description, float precio, int stock);
+    public Producto createProducto(String nombre, String description, float precio, int stock, boolean activo);
 
     public boolean agregarImagen(Long idProducto, Blob blob) throws ProductoInexistenteException;
 }
