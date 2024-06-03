@@ -37,7 +37,6 @@ public class Producto {
         this.stock = stock;
         this.categoria = categoria;
         this.descuento = 0;
-        this.usuario = usuario;
         this.activo = true;
     }
 

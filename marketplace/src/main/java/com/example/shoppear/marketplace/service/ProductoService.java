@@ -21,4 +21,6 @@ public interface ProductoService {
     public Long deleteProducto(Long idProducto) throws ProductoInexistenteException;
 
     public Producto modifyProducto(Long productoId, String nombre, String description, float precio, Blob img, int stock, Long idCategoria) throws ProductoInexistenteException, CategoriaInexistenteException;
+
+    public Producto modifyDescuento(Long productoId, float descuento) throws ProductoInexistenteException;
 }

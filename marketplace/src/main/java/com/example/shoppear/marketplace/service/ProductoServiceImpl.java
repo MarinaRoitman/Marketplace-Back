@@ -60,16 +60,6 @@ public class ProductoServiceImpl implements ProductoService{
         }
     }
 
-    /*
-        public Categoria createCategoria(String nombre) throws CategoriaDuplicadaException {
-        nombre = nombre.toLowerCase();
-        List<Categoria> categorias = categoriaRepository.findByNombre(nombre);
-        if (categorias.isEmpty())
-            return categoriaRepository.save(new Categoria(nombre));
-        throw new CategoriaDuplicadaException();
-    }
-     */
-
     @Override
     public boolean agregarImagen(Long idProducto, Blob blob) throws ProductoInexistenteException {
         Optional<Producto> producto = productoRepository.findById(idProducto);
@@ -114,15 +104,15 @@ public class ProductoServiceImpl implements ProductoService{
         }
     }
 
-    /*
     @Override
-    public Usuario modifyUsuario(Long id, String nombre, String apellido, String mail, String contrasena, String direccion, String username) throws UsuarioInexistenteException {
-        mail = mail.toLowerCase();
-        List<Usuario> usuarios = usuarioRepository.findByMail(mail);
-        String contrasenaHash = DigestUtils.md5Hex(contrasena);
-        if (usuarios.size() == 1)
-            return usuarioRepository.save(new Usuario(id, nombre, apellido, mail, contrasenaHash, direccion, username));
-        throw new UsuarioInexistenteException();
+    public Producto modifyDescuento(Long productoId,float descuento)throws ProductoInexistenteException {
+        Optional<Producto> prods = productoRepository.findById(productoId);
+        if (prods.isPresent()){
+            prods.get().setDescuento(descuento);
+            return productoRepository.save(prods.get());
+
+        }else{
+            throw new ProductoInexistenteException();
+        }
     }
-     */
 }

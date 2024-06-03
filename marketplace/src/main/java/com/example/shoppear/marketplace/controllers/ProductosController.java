@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.shoppear.marketplace.entity.Producto;
 import com.example.shoppear.marketplace.entity.dto.AgregarArchivoRequest;
 import com.example.shoppear.marketplace.entity.dto.ImageResponse;
+import com.example.shoppear.marketplace.entity.dto.ModificarDescuentoRequest;
 import com.example.shoppear.marketplace.entity.dto.ModificarProductoRequest;
 import com.example.shoppear.marketplace.entity.dto.NuevoProductoRequest;
 import com.example.shoppear.marketplace.entity.dto.ProductoResponse;
@@ -111,4 +112,16 @@ public class ProductosController {
         Producto result = productoService.modifyProducto(productoRequest.getId(), productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), productoRequest.getImg(), productoRequest.getStock(), productoRequest.getIdCategoria());
         return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(ProductoResponse.builder().id(result.getId()).nombre(result.getNombre()).descripcion(result.getDescripcion()).precio(result.getPrecio()).img(result.getImg()).stock(result.getStock()).idCategoria(result.getCategoria().getId()).descuento(result.getDescuento()).creadorUsername(result.getUsuario().getUsername()).activo(result.isActivo()).build());
     }
+
+    @PutMapping("/descuento/{id}")
+    public ResponseEntity<Object> modifyDescuento(@RequestBody ModificarDescuentoRequest productoRequest) throws ProductoInexistenteException{
+        Producto result = productoService.modifyDescuento(productoRequest.getId(), productoRequest.getDescuento());
+        return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(ProductoResponse.builder().id(result.getId()).nombre(result.getNombre()).descripcion(result.getDescripcion()).precio(result.getPrecio()).img(result.getImg()).stock(result.getStock()).idCategoria(result.getCategoria().getId()).descuento(result.getDescuento()).creadorUsername(result.getUsuario().getUsername()).activo(result.isActivo()).build());
+    }
+
+    /*@PutMapping("/mostrar/{id}")
+    public ResponseEntity<Object> modifyDescuento(@RequestBody ModificarDescuentoRequest productoRequest) throws ProductoInexistenteException{
+        Producto result = productoService.modifyDescuento(productoRequest.getId(), productoRequest.getDescuento());
+        return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(ProductoResponse.builder().id(result.getId()).nombre(result.getNombre()).descripcion(result.getDescripcion()).precio(result.getPrecio()).img(result.getImg()).stock(result.getStock()).idCategoria(result.getCategoria().getId()).descuento(result.getDescuento()).creadorUsername(result.getUsuario().getUsername()).activo(result.isActivo()).build());
+    }*/
 }
