@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.shoppear.marketplace.entity.Orden;
 import com.example.shoppear.marketplace.entity.Usuario;
 import com.example.shoppear.marketplace.exceptions.ListadoVacioException;
+import com.example.shoppear.marketplace.exceptions.OrdenInexistenteException;
 import com.example.shoppear.marketplace.exceptions.UsuarioInexistenteException;
 import com.example.shoppear.marketplace.repository.OrdenRepository;
 import com.example.shoppear.marketplace.repository.UsuarioRepository;
@@ -37,4 +38,13 @@ public class OrdenesServiceImpl implements OrdenesService{
         }
     }
 
+    @Override
+    public Optional<Orden> getOrdenesById(Long id) throws OrdenInexistenteException, ListadoVacioException {
+        Optional<Orden> orden = ordenRepository.findById(id);
+        if(orden.isPresent()){
+            return orden;
+        }else{
+            throw new OrdenInexistenteException();
+        }
+    }
 }

@@ -61,14 +61,16 @@ public class OrdenesController {
         return ResponseEntity.ok().body(ordenesDto);
     }
 
-    /*
-    @GetMapping("/{usuarioId}")
-    public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long usuarioId) throws UsuarioInexistenteException {
-        Optional<Usuario> result = usuarioService.getUsuarioById(usuarioId);
-        if (result.isPresent())
-            return ResponseEntity.ok(result.get());
-
-        return ResponseEntity.noContent().build();
+    @GetMapping("{id}")
+    public ResponseEntity<OrdenResponse> getOrdenesById(@PathVariable Long id) throws OrdenInexistenteException, ListadoVacioException {
+        Optional<Orden> o = ordenesService.getOrdenesById(id);
+        UsuarioOrdenResponse uoResponse = UsuarioOrdenResponse.builder().id(o.get().getUsuario().getId()).usernamePedido(o.get().getUsuario().getUsername()).nombrePedido(o.get().getUsuario().getNombre()).apellidoPedido(o.get().getUsuario().getApellido()).build();
+        List<ProductoOrdenResponse> prods = new ArrayList<ProductoOrdenResponse>();
+        for(OrdenProducto op : o.get().getOrdenProducto()){
+            ProductoOrdenResponse poResponse = ProductoOrdenResponse.builder().id(op.getProducto().getId()).nombre(op.getProducto().getNombre()).descripcion(op.getProducto().getDescripcion()).precio(op.getProducto().getPrecio()).img(op.getProducto().getImg()).descuento(op.getProducto().getDescuento()).creadorUsername(op.getProducto().getUsuario().getUsername()).cantidad(op.getCantidad()).build();
+            prods.add(poResponse);
+        }
+        OrdenResponse ordenDto = OrdenResponse.builder().id(o.get().getId()).comprador(uoResponse).productos(prods).fecha(o.get().getFecha()).build();
+        return ResponseEntity.ok().body(ordenDto);
     }
-     */
 }
