@@ -32,7 +32,6 @@ public class CategoriasController {
         return ResponseEntity.ok(categoriaService.getCategorias());
     }
 
-
     @GetMapping("/{categoryId}")
     public ResponseEntity<Optional<Categoria>> getCategoryById(@PathVariable Long categoryId) throws CategoriaInexistenteException {
         return ResponseEntity.ok(categoriaService.getCategoriaById(categoryId));

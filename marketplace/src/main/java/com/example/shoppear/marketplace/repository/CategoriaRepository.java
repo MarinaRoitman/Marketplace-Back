@@ -12,6 +12,5 @@ import com.example.shoppear.marketplace.entity.Categoria;
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     List<Categoria> findByNombre(String nombre);
     Optional<Categoria> findById(Long id);
-
 }
 
