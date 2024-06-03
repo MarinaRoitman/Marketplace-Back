@@ -29,6 +29,18 @@ public class Producto {
         this.activo = true;
     }
 
+    public Producto(String nombre, String descripcion, float precio, Blob img, int stock, Categoria categoria) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.img = img;
+        this.stock = stock;
+        this.categoria = categoria;
+        this.descuento = 0;
+        this.usuario = usuario;
+        this.activo = true;
+    }
+
     public void setImg(Blob img){
         this.img = img;
     }

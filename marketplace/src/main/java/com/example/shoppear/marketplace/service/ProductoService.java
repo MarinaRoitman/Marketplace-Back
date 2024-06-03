@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.sql.Blob;
 
 import com.example.shoppear.marketplace.entity.Producto;
+import com.example.shoppear.marketplace.exceptions.CategoriaInexistenteException;
 import com.example.shoppear.marketplace.exceptions.ProductoInexistenteException;
 import com.example.shoppear.marketplace.exceptions.ProductoNoSePudoCrearException;
 
@@ -18,4 +19,6 @@ public interface ProductoService {
     public boolean agregarImagen(Long idProducto, Blob blob) throws ProductoInexistenteException;
 
     public Long deleteProducto(Long idProducto) throws ProductoInexistenteException;
+
+    public Producto modifyProducto(Long productoId, String nombre, String description, float precio, Blob img, int stock, Long idCategoria) throws ProductoInexistenteException, CategoriaInexistenteException;
 }

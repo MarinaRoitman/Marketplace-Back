@@ -2,8 +2,6 @@ package com.example.shoppear.marketplace.entity.dto;
 
 import java.sql.Blob;
 
-import com.example.shoppear.marketplace.entity.Categoria;
-
 import lombok.Builder;
 import lombok.Data;
 

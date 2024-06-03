@@ -22,18 +22,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.shoppear.marketplace.entity.Producto;
-import com.example.shoppear.marketplace.entity.Usuario;
 import com.example.shoppear.marketplace.entity.dto.AgregarArchivoRequest;
 import com.example.shoppear.marketplace.entity.dto.ImageResponse;
-import com.example.shoppear.marketplace.entity.dto.ModificarUsuarioRequest;
+import com.example.shoppear.marketplace.entity.dto.ModificarProductoRequest;
 import com.example.shoppear.marketplace.entity.dto.NuevoProductoRequest;
-import com.example.shoppear.marketplace.entity.dto.NuevoUsuarioRequest;
 import com.example.shoppear.marketplace.entity.dto.ProductoResponse;
+import com.example.shoppear.marketplace.exceptions.CategoriaInexistenteException;
 import com.example.shoppear.marketplace.exceptions.ProductoInexistenteException;
 import com.example.shoppear.marketplace.exceptions.ProductoNoImgException;
 import com.example.shoppear.marketplace.exceptions.ProductoNoSePudoCrearException;
-import com.example.shoppear.marketplace.exceptions.UsuarioExistenteException;
-import com.example.shoppear.marketplace.exceptions.UsuarioInexistenteException;
 import com.example.shoppear.marketplace.service.ProductoService;
 import java.sql.Blob;
 import java.util.ArrayList;
@@ -107,5 +104,11 @@ public class ProductosController {
     public ResponseEntity<Object> createProducto(@RequestBody NuevoProductoRequest productoRequest) throws ProductoNoSePudoCrearException{
         Producto p = productoService.createProducto(productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), productoRequest.getImg(), productoRequest.getStock(), productoRequest.getIdCategoria(), productoRequest.getDescuento(), productoRequest.getIdUsuario());
         return ResponseEntity.created(URI.create("/productos/" + p.getId())).body(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(p.getImg()).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> modifyProducto(@RequestBody ModificarProductoRequest productoRequest) throws ProductoInexistenteException, CategoriaInexistenteException{
+        Producto result = productoService.modifyProducto(productoRequest.getId(), productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), productoRequest.getImg(), productoRequest.getStock(), productoRequest.getIdCategoria());
+        return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(ProductoResponse.builder().id(result.getId()).nombre(result.getNombre()).descripcion(result.getDescripcion()).precio(result.getPrecio()).img(result.getImg()).stock(result.getStock()).idCategoria(result.getCategoria().getId()).descuento(result.getDescuento()).creadorUsername(result.getUsuario().getUsername()).activo(result.isActivo()).build());
     }
 }

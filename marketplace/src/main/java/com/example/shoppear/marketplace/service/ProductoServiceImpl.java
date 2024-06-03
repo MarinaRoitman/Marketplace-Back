@@ -94,4 +94,35 @@ public class ProductoServiceImpl implements ProductoService{
             throw new ProductoInexistenteException();
         }
     }
+
+    @Override
+    public Producto modifyProducto(Long productoId, String nombre, String description, float precio, Blob img, int stock, Long idCategoria) throws ProductoInexistenteException, CategoriaInexistenteException {
+        Optional<Producto> prods = productoRepository.findById(productoId);
+        if (prods.isPresent()){
+            Optional<Categoria> categoria = categoriaService.getCategoriaById(idCategoria);
+
+            prods.get().setNombre(nombre);
+            prods.get().setDescripcion(description);
+            prods.get().setPrecio(precio);
+            prods.get().setImg(img);
+            prods.get().setStock(stock);
+            prods.get().setCategoria(categoria.get());
+            return productoRepository.save(prods.get());
+
+        }else{
+            throw new ProductoInexistenteException();
+        }
+    }
+
+    /*
+    @Override
+    public Usuario modifyUsuario(Long id, String nombre, String apellido, String mail, String contrasena, String direccion, String username) throws UsuarioInexistenteException {
+        mail = mail.toLowerCase();
+        List<Usuario> usuarios = usuarioRepository.findByMail(mail);
+        String contrasenaHash = DigestUtils.md5Hex(contrasena);
+        if (usuarios.size() == 1)
+            return usuarioRepository.save(new Usuario(id, nombre, apellido, mail, contrasenaHash, direccion, username));
+        throw new UsuarioInexistenteException();
+    }
+     */
 }
