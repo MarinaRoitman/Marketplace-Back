@@ -29,9 +29,11 @@ import com.example.shoppear.marketplace.entity.dto.ModificarProductoRequest;
 import com.example.shoppear.marketplace.entity.dto.NuevoProductoRequest;
 import com.example.shoppear.marketplace.entity.dto.ProductoResponse;
 import com.example.shoppear.marketplace.exceptions.CategoriaInexistenteException;
+import com.example.shoppear.marketplace.exceptions.ListadoVacioException;
 import com.example.shoppear.marketplace.exceptions.ProductoInexistenteException;
 import com.example.shoppear.marketplace.exceptions.ProductoNoImgException;
 import com.example.shoppear.marketplace.exceptions.ProductoNoSePudoCrearException;
+import com.example.shoppear.marketplace.exceptions.UsuarioInexistenteException;
 import com.example.shoppear.marketplace.service.ProductoService;
 import java.sql.Blob;
 import java.util.ArrayList;
@@ -119,9 +121,23 @@ public class ProductosController {
         return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(ProductoResponse.builder().id(result.getId()).nombre(result.getNombre()).descripcion(result.getDescripcion()).precio(result.getPrecio()).img(result.getImg()).stock(result.getStock()).idCategoria(result.getCategoria().getId()).descuento(result.getDescuento()).creadorUsername(result.getUsuario().getUsername()).activo(result.isActivo()).build());
     }
 
-    /*@PutMapping("/mostrar/{id}")
-    public ResponseEntity<Object> modifyDescuento(@RequestBody ModificarDescuentoRequest productoRequest) throws ProductoInexistenteException{
-        Producto result = productoService.modifyDescuento(productoRequest.getId(), productoRequest.getDescuento());
-        return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(ProductoResponse.builder().id(result.getId()).nombre(result.getNombre()).descripcion(result.getDescripcion()).precio(result.getPrecio()).img(result.getImg()).stock(result.getStock()).idCategoria(result.getCategoria().getId()).descuento(result.getDescuento()).creadorUsername(result.getUsuario().getUsername()).activo(result.isActivo()).build());
-    }*/
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<List<ProductoResponse>> getProductosPorUsuario(@PathVariable Long idUsuario) throws ListadoVacioException, UsuarioInexistenteException {
+        List<Producto> prods = productoService.getProductosByUsuario(idUsuario);
+        List<ProductoResponse> prodsDto = new ArrayList<ProductoResponse>();
+        for(Producto p : prods){
+            prodsDto.add(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(p.getImg()).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
+        }
+        return ResponseEntity.ok().body(prodsDto);
+    }
+
+    @GetMapping("/categoria/{idCategoria}")
+    public ResponseEntity<List<ProductoResponse>> getProductosPorCategoria(@PathVariable Long idCategoria) throws ListadoVacioException, CategoriaInexistenteException {
+        List<Producto> prods = productoService.getProductosByCategoria(idCategoria);
+        List<ProductoResponse> prodsDto = new ArrayList<ProductoResponse>();
+        for(Producto p : prods){
+            prodsDto.add(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(p.getImg()).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
+        }
+        return ResponseEntity.ok().body(prodsDto);
+    }
 }

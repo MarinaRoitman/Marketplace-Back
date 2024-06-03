@@ -11,6 +11,7 @@ import com.example.shoppear.marketplace.entity.Categoria;
 import com.example.shoppear.marketplace.entity.Producto;
 import com.example.shoppear.marketplace.entity.Usuario;
 import com.example.shoppear.marketplace.exceptions.CategoriaInexistenteException;
+import com.example.shoppear.marketplace.exceptions.ListadoVacioException;
 import com.example.shoppear.marketplace.exceptions.ProductoInexistenteException;
 import com.example.shoppear.marketplace.exceptions.ProductoNoSePudoCrearException;
 import com.example.shoppear.marketplace.exceptions.UsuarioInexistenteException;
@@ -113,6 +114,28 @@ public class ProductoServiceImpl implements ProductoService{
 
         }else{
             throw new ProductoInexistenteException();
+        }
+    }
+
+    @Override
+    public List<Producto> getProductosByUsuario(Long idUsuario) throws ListadoVacioException, UsuarioInexistenteException {
+        Optional<Usuario> user = usuarioService.getUsuarioById(idUsuario);
+        List<Producto> productos = productoRepository.findByUsuario(user);
+        if(productos.size() > 0){
+            return productos;
+        }else{
+            throw new ListadoVacioException();
+        }
+    }
+
+    @Override
+    public List<Producto> getProductosByCategoria(Long idCategoria) throws ListadoVacioException, CategoriaInexistenteException {
+        Optional<Categoria> cat = categoriaService.getCategoriaById(idCategoria);
+        List<Producto> productos = productoRepository.findByCategoria(cat);
+        if(productos.size() > 0){
+            return productos;
+        }else{
+            throw new ListadoVacioException();
         }
     }
 }
