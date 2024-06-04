@@ -1,7 +1,9 @@
 package com.example.shoppear.marketplace.entity.dto;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
+
+import com.example.shoppear.marketplace.entity.MediosDePago;
 
 import lombok.Builder;
 import lombok.Data;
@@ -13,4 +15,5 @@ public class OrdenResponse {
     private UsuarioOrdenResponse comprador;
     private List<ProductoOrdenResponse> productos;
     private Date fecha;
+    private FacturacionResponse datosFacturacion;
 }

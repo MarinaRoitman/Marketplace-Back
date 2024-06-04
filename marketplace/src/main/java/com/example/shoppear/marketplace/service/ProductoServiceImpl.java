@@ -31,12 +31,12 @@ public class ProductoServiceImpl implements ProductoService{
 
 
     public List<Producto> getProductosActivos() {
-        return productoRepository.findByActivoTrue();
+        return productoRepository.findByActivoTrueAndStockGreaterThan(0);
     }
 
     @Override
     public Optional<Producto> getProductoById(Long productoId) throws ProductoInexistenteException {
-        Optional<Producto> producto = productoRepository.findById(productoId);
+        Optional<Producto> producto = productoRepository.findByIdAndActivoTrue(productoId);
         if(producto.isPresent()){
             return producto;
         }else{

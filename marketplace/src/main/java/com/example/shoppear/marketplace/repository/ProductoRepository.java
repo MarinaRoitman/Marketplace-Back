@@ -14,5 +14,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findByActivoTrue();
     Optional<Producto> findById(Long id);
     List<Producto> findByUsuario(Optional<Usuario> user);
-    List<Producto> findByCategoria(Optional<Categoria> cat);    
+    List<Producto> findByCategoria(Optional<Categoria> cat);
+    List<Producto> findByActivoTrueAndStockGreaterThan(int minimo);
+    Optional<Producto> findByIdAndActivoTrue(Long productoId);    
 }

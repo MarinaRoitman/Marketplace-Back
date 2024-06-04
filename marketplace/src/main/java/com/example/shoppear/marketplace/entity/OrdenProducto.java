@@ -1,5 +1,7 @@
 package com.example.shoppear.marketplace.entity;
 
+import java.util.Optional;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +17,24 @@ import lombok.Data;
 @Entity
 @Table(name = "ordenProducto")
 public class OrdenProducto {
+
+    public OrdenProducto() {}
+
+    public OrdenProducto(Producto producto, Integer cantidad) {
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.precioPagado = producto.getPrecio();
+        this.dctoAplicado = producto.getDescuento();
+    }
+
+    public OrdenProducto(Orden orden, Producto producto, int cantidad) {
+        this.orden = orden;
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.precioPagado = producto.getPrecio();
+        this.dctoAplicado = producto.getDescuento();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,4 +49,10 @@ public class OrdenProducto {
 
     @Column(name = "cantidad")
     private int cantidad;
+
+    @Column(name = "precioPagado")
+    private float precioPagado;
+
+    @Column(name = "dctoAplicado")
+    private float dctoAplicado;
 }
