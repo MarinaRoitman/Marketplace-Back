@@ -29,6 +29,7 @@ import com.example.shoppear.marketplace.exceptions.ListadoVacioException;
 import com.example.shoppear.marketplace.exceptions.OrdenInexistenteException;
 import com.example.shoppear.marketplace.exceptions.ProductoInexistenteException;
 import com.example.shoppear.marketplace.exceptions.ProductoNoSePudoCrearException;
+import com.example.shoppear.marketplace.exceptions.SinStockException;
 import com.example.shoppear.marketplace.exceptions.UsuarioInexistenteException;
 import com.example.shoppear.marketplace.service.OrdenesService;
 
@@ -92,7 +93,7 @@ public class OrdenesController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createOrden(@RequestBody OrdenRequest ordenRequest) throws UsuarioInexistenteException, ProductoInexistenteException, CategoriaInexistenteException{
+    public ResponseEntity<Object> createOrden(@RequestBody OrdenRequest ordenRequest) throws UsuarioInexistenteException, ProductoInexistenteException, CategoriaInexistenteException, SinStockException{
         Orden o = ordenesService.createOrden(ordenRequest.getIdUsuario(), ordenRequest.getDetalleProds(), ordenRequest.getDireccionFactura(), ordenRequest.getTipoPago(), ordenRequest.getNumeroTarjeta());
         
         UsuarioOrdenResponse uoResponse = UsuarioOrdenResponse.builder().id(o.getUsuario().getId()).usernamePedido(o.getUsuario().getUsername()).nombrePedido(o.getUsuario().getNombre()).apellidoPedido(o.getUsuario().getApellido()).build();

@@ -49,26 +49,39 @@ public class ProductosController {
 
 
     @GetMapping
-    public ResponseEntity<List<ProductoResponse>> getProductosActivos() {
+    public ResponseEntity<List<ProductoResponse>> getProductosActivos() throws SQLException {
         List<Producto> prods = productoService.getProductosActivos();
         List<ProductoResponse> prodsDto = new ArrayList<ProductoResponse>();
         for(Producto p : prods){
-            prodsDto.add(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(p.getImg()).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
+            String img = null;
+            if (p.getImg() != null) {
+                img = Base64.getEncoder().encodeToString(p.getImg().getBytes(1, (int) p.getImg().length()));
+            }
+
+
+            prodsDto.add(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(img).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
         }
 
         return ResponseEntity.ok().body(prodsDto);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ProductoResponse> getProductoById(@PathVariable Long id) throws ProductoInexistenteException {
+    public ResponseEntity<ProductoResponse> getProductoById(@PathVariable Long id) throws ProductoInexistenteException, SQLException {
         Optional<Producto> productoOptional = productoService.getProductoById(id);
         Producto producto;
+        String img = null;
+
         if(productoOptional.isPresent()){
             producto = productoOptional.get();
+
+            if (producto.getImg() != null) {
+                img = Base64.getEncoder().encodeToString(producto.getImg().getBytes(1, (int) producto.getImg().length()));
+            }
+
         }else{
             throw new ProductoInexistenteException();
         }
-        return ResponseEntity.ok().body(ProductoResponse.builder().id(producto.getId()).nombre(producto.getNombre()).descripcion(producto.getDescripcion()).precio(producto.getPrecio()).img(producto.getImg()).stock(producto.getStock()).idCategoria(producto.getCategoria().getId()).descuento(producto.getDescuento()).creadorUsername(producto.getUsuario().getUsername()).activo(producto.isActivo()).build());
+        return ResponseEntity.ok().body(ProductoResponse.builder().id(producto.getId()).nombre(producto.getNombre()).descripcion(producto.getDescripcion()).precio(producto.getPrecio()).img(img).stock(producto.getStock()).idCategoria(producto.getCategoria().getId()).descuento(producto.getDescuento()).creadorUsername(producto.getUsuario().getUsername()).activo(producto.isActivo()).build());
     }
 
     @PostMapping("/img")
@@ -104,39 +117,68 @@ public class ProductosController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createProducto(@RequestBody NuevoProductoRequest productoRequest) throws ProductoNoSePudoCrearException{
+    public ResponseEntity<Object> createProducto(@RequestBody NuevoProductoRequest productoRequest) throws ProductoNoSePudoCrearException, SQLException{
         Producto p = productoService.createProducto(productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), productoRequest.getImg(), productoRequest.getStock(), productoRequest.getIdCategoria(), productoRequest.getDescuento(), productoRequest.getIdUsuario());
-        return ResponseEntity.created(URI.create("/productos/" + p.getId())).body(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(p.getImg()).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
+        String img = null;
+        if (p.getImg() != null) {
+            img = Base64.getEncoder().encodeToString(p.getImg().getBytes(1, (int) p.getImg().length()));
+        }
+
+        
+        return ResponseEntity.created(URI.create("/productos/" + p.getId())).body(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(img).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> modifyProducto(@RequestBody ModificarProductoRequest productoRequest) throws ProductoInexistenteException, CategoriaInexistenteException{
+    public ResponseEntity<Object> modifyProducto(@RequestBody ModificarProductoRequest productoRequest) throws ProductoInexistenteException, CategoriaInexistenteException, SQLException{
         Producto result = productoService.modifyProducto(productoRequest.getId(), productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), productoRequest.getImg(), productoRequest.getStock(), productoRequest.getIdCategoria());
-        return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(ProductoResponse.builder().id(result.getId()).nombre(result.getNombre()).descripcion(result.getDescripcion()).precio(result.getPrecio()).img(result.getImg()).stock(result.getStock()).idCategoria(result.getCategoria().getId()).descuento(result.getDescuento()).creadorUsername(result.getUsuario().getUsername()).activo(result.isActivo()).build());
+        String img = null;
+        if (result.getImg() != null) {
+            img = Base64.getEncoder().encodeToString(result.getImg().getBytes(1, (int) result.getImg().length()));
+        }
+
+        
+        return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(ProductoResponse.builder().id(result.getId()).nombre(result.getNombre()).descripcion(result.getDescripcion()).precio(result.getPrecio()).img(img).stock(result.getStock()).idCategoria(result.getCategoria().getId()).descuento(result.getDescuento()).creadorUsername(result.getUsuario().getUsername()).activo(result.isActivo()).build());
     }
 
     @PutMapping("/descuento/{id}")
-    public ResponseEntity<Object> modifyDescuento(@RequestBody ModificarDescuentoRequest productoRequest) throws ProductoInexistenteException{
+    public ResponseEntity<Object> modifyDescuento(@RequestBody ModificarDescuentoRequest productoRequest) throws ProductoInexistenteException, SQLException{
         Producto result = productoService.modifyDescuento(productoRequest.getId(), productoRequest.getDescuento());
-        return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(ProductoResponse.builder().id(result.getId()).nombre(result.getNombre()).descripcion(result.getDescripcion()).precio(result.getPrecio()).img(result.getImg()).stock(result.getStock()).idCategoria(result.getCategoria().getId()).descuento(result.getDescuento()).creadorUsername(result.getUsuario().getUsername()).activo(result.isActivo()).build());
+        String img = null;
+        if (result.getImg() != null) {
+            img = Base64.getEncoder().encodeToString(result.getImg().getBytes(1, (int) result.getImg().length()));
+        }
+
+        return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(ProductoResponse.builder().id(result.getId()).nombre(result.getNombre()).descripcion(result.getDescripcion()).precio(result.getPrecio()).img(img).stock(result.getStock()).idCategoria(result.getCategoria().getId()).descuento(result.getDescuento()).creadorUsername(result.getUsuario().getUsername()).activo(result.isActivo()).build());
     }
 
     @GetMapping("/usuario/{idUsuario}")
-    public ResponseEntity<List<ProductoResponse>> getProductosPorUsuario(@PathVariable Long idUsuario) throws ListadoVacioException, UsuarioInexistenteException {
+    public ResponseEntity<List<ProductoResponse>> getProductosPorUsuario(@PathVariable Long idUsuario) throws ListadoVacioException, UsuarioInexistenteException, SQLException {
         List<Producto> prods = productoService.getProductosByUsuario(idUsuario);
         List<ProductoResponse> prodsDto = new ArrayList<ProductoResponse>();
         for(Producto p : prods){
-            prodsDto.add(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(p.getImg()).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
+            String img = null;
+            if (p.getImg() != null) {
+                img = Base64.getEncoder().encodeToString(p.getImg().getBytes(1, (int) p.getImg().length()));
+            }
+
+
+            prodsDto.add(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(img).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
         }
         return ResponseEntity.ok().body(prodsDto);
     }
 
     @GetMapping("/categoria/{idCategoria}")
-    public ResponseEntity<List<ProductoResponse>> getProductosPorCategoria(@PathVariable Long idCategoria) throws ListadoVacioException, CategoriaInexistenteException {
+    public ResponseEntity<List<ProductoResponse>> getProductosPorCategoria(@PathVariable Long idCategoria) throws ListadoVacioException, CategoriaInexistenteException, SQLException {
         List<Producto> prods = productoService.getProductosByCategoria(idCategoria);
         List<ProductoResponse> prodsDto = new ArrayList<ProductoResponse>();
         for(Producto p : prods){
-            prodsDto.add(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(p.getImg()).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
+            String img = null;
+            if (p.getImg() != null) {
+                img = Base64.getEncoder().encodeToString(p.getImg().getBytes(1, (int) p.getImg().length()));
+            }
+
+
+            prodsDto.add(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(img).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
         }
         return ResponseEntity.ok().body(prodsDto);
     }

@@ -1,7 +1,5 @@
 package com.example.shoppear.marketplace.entity.dto;
 
-import java.sql.Blob;
-
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,7 +10,7 @@ public class ProductoResponse {
     private String nombre;
     private String descripcion;
     private float precio;
-    private Blob img;
+    private String img;
     private int stock;
     private Long idCategoria;
     private float descuento;

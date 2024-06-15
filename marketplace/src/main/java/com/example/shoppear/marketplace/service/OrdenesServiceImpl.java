@@ -18,6 +18,7 @@ import com.example.shoppear.marketplace.exceptions.CategoriaInexistenteException
 import com.example.shoppear.marketplace.exceptions.ListadoVacioException;
 import com.example.shoppear.marketplace.exceptions.OrdenInexistenteException;
 import com.example.shoppear.marketplace.exceptions.ProductoInexistenteException;
+import com.example.shoppear.marketplace.exceptions.SinStockException;
 import com.example.shoppear.marketplace.exceptions.UsuarioInexistenteException;
 import com.example.shoppear.marketplace.repository.OrdenRepository;
 
@@ -65,10 +66,20 @@ public class OrdenesServiceImpl implements OrdenesService{
     }
 
     @Override
-    public Orden createOrden(Long idUsuario, List<ProductoOrdenRequest> detalleProds, String direccionFactura, String tipoPago, String numeroTarjeta) throws UsuarioInexistenteException, ProductoInexistenteException, CategoriaInexistenteException {
+    public Orden createOrden(Long idUsuario, List<ProductoOrdenRequest> detalleProds, String direccionFactura, String tipoPago, String numeroTarjeta) throws UsuarioInexistenteException, ProductoInexistenteException, CategoriaInexistenteException, SinStockException {
         Optional<Usuario> user = usuarioService.getUsuarioById(idUsuario);
         if(user.isPresent()){
-                        
+            for(ProductoOrdenRequest opRequest: detalleProds){
+                Optional<Producto> producto = productoService.getProductoById(opRequest.getIdProd());
+                
+                if(producto.isPresent()){
+                    int nuevoStock = producto.get().getStock() - opRequest.getCantidad();
+                    if(nuevoStock < 0){
+                        throw new SinStockException();
+                    }
+                }
+            }
+            
             MediosDePago medio = mediosDePagoService.createMedioDePago(tipoPago, numeroTarjeta);
 
             Orden orden = ordenRepository.save(new Orden(user.get(), new Date(), medio, direccionFactura));
