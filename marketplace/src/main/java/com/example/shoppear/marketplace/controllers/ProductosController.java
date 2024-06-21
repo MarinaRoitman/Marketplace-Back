@@ -41,7 +41,7 @@ import java.util.Base64;
 
 
 @RestController
-@RequestMapping("productos")
+@RequestMapping("/auth/productos")
 public class ProductosController {
 
     @Autowired
@@ -84,6 +84,7 @@ public class ProductosController {
         return ResponseEntity.ok().body(ProductoResponse.builder().id(producto.getId()).nombre(producto.getNombre()).descripcion(producto.getDescripcion()).precio(producto.getPrecio()).img(img).stock(producto.getStock()).idCategoria(producto.getCategoria().getId()).descuento(producto.getDescuento()).creadorUsername(producto.getUsuario().getUsername()).activo(producto.isActivo()).build());
     }
 
+    // hacer que este metodo sea privado
     @PostMapping("/img")
     public String addImagePost(AgregarArchivoRequest request) throws IOException, SerialException, SQLException, ProductoInexistenteException {
         byte[] bytes = request.getFile().getBytes();
@@ -109,6 +110,8 @@ public class ProductosController {
         }
     }
 
+
+    // hacer que este metodo sea privado
     @DeleteMapping
     public ResponseEntity<Object> deleteProducto(@RequestParam(name = "idProducto") Long idProducto) throws ProductoInexistenteException{
         //Hace baja logica del producto, no lo borra realmente
@@ -116,6 +119,7 @@ public class ProductosController {
         return ResponseEntity.created(URI.create("/productos/" + result)).body(result);
     }
 
+    // hacer que este metodo sea privado
     @PostMapping
     public ResponseEntity<Object> createProducto(@RequestBody NuevoProductoRequest productoRequest) throws ProductoNoSePudoCrearException, SQLException{
         Producto p = productoService.createProducto(productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), productoRequest.getImg(), productoRequest.getStock(), productoRequest.getIdCategoria(), productoRequest.getDescuento(), productoRequest.getIdUsuario());
@@ -128,6 +132,7 @@ public class ProductosController {
         return ResponseEntity.created(URI.create("/productos/" + p.getId())).body(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(img).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
     }
 
+    // hacer que este metodo sea privado
     @PutMapping("/{id}")
     public ResponseEntity<Object> modifyProducto(@RequestBody ModificarProductoRequest productoRequest) throws ProductoInexistenteException, CategoriaInexistenteException, SQLException{
         Producto result = productoService.modifyProducto(productoRequest.getId(), productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), productoRequest.getImg(), productoRequest.getStock(), productoRequest.getIdCategoria());
@@ -140,6 +145,7 @@ public class ProductosController {
         return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(ProductoResponse.builder().id(result.getId()).nombre(result.getNombre()).descripcion(result.getDescripcion()).precio(result.getPrecio()).img(img).stock(result.getStock()).idCategoria(result.getCategoria().getId()).descuento(result.getDescuento()).creadorUsername(result.getUsuario().getUsername()).activo(result.isActivo()).build());
     }
 
+    // hacer que este metodo sea privado
     @PutMapping("/descuento/{id}")
     public ResponseEntity<Object> modifyDescuento(@RequestBody ModificarDescuentoRequest productoRequest) throws ProductoInexistenteException, SQLException{
         Producto result = productoService.modifyDescuento(productoRequest.getId(), productoRequest.getDescuento());

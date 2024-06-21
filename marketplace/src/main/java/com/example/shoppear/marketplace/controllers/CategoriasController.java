@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("categorias")
+@RequestMapping("/auth/categorias")
 public class CategoriasController {
 
     @Autowired
@@ -37,6 +37,7 @@ public class CategoriasController {
         return ResponseEntity.ok(categoriaService.getCategoriaById(categoryId));
     }
 
+    // hacer que este metodo sea privado
     @PostMapping
     public ResponseEntity<Object> createCategoria(@RequestBody CategoriaRequest categoriaRequest)
             throws CategoriaDuplicadaException {

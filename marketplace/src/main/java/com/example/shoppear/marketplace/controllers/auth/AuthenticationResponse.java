@@ -1,4 +1,4 @@
-package com.uade.tpo.demo.controllers.auth;
+package com.example.shoppear.marketplace.controllers.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

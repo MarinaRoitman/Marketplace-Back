@@ -10,6 +10,8 @@ import com.example.shoppear.marketplace.entity.Producto;
 import com.example.shoppear.marketplace.repository.MediosDePagoRepository;
 import com.example.shoppear.marketplace.repository.OrdenProductoRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class OrdenProductoServiceImpl implements OrdenProductoService {
 
@@ -18,6 +20,7 @@ public class OrdenProductoServiceImpl implements OrdenProductoService {
     private OrdenProductoRepository ordenProductoRepository;
 
     @Override
+    @Transactional // es esto creo
     public OrdenProducto createOrdenProducto(Orden orden, Producto producto, int cantidad) {
 
         return ordenProductoRepository.save(new OrdenProducto(orden, producto, cantidad));

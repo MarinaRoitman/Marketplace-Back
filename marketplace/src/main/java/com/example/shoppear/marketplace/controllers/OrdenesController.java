@@ -34,7 +34,7 @@ import com.example.shoppear.marketplace.exceptions.UsuarioInexistenteException;
 import com.example.shoppear.marketplace.service.OrdenesService;
 
 @RestController
-@RequestMapping("ordenes")
+@RequestMapping("/auth/ordenes")
 public class OrdenesController {
 
     @Autowired
@@ -92,6 +92,8 @@ public class OrdenesController {
         return ResponseEntity.ok().body(ordenDto);
     }
 
+
+    // hacer que este metodo sea privado
     @PostMapping
     public ResponseEntity<Object> createOrden(@RequestBody OrdenRequest ordenRequest) throws UsuarioInexistenteException, ProductoInexistenteException, CategoriaInexistenteException, SinStockException{
         Orden o = ordenesService.createOrden(ordenRequest.getIdUsuario(), ordenRequest.getDetalleProds(), ordenRequest.getDireccionFactura(), ordenRequest.getTipoPago(), ordenRequest.getNumeroTarjeta());

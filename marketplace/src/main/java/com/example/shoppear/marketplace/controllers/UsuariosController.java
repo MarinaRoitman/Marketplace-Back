@@ -24,7 +24,7 @@ import com.example.shoppear.marketplace.exceptions.UsuarioLoginNoExitosoExceptio
 import com.example.shoppear.marketplace.service.UsuarioService;
 
 @RestController
-@RequestMapping("usuarios")
+@RequestMapping("/auth/usuarios")
 public class UsuariosController {
 
     @Autowired
@@ -43,13 +43,14 @@ public class UsuariosController {
 
         return ResponseEntity.noContent().build();
     }
-
+/* saco este endpoint porque el authenticationController se encarga de la creación de usuarios
     @PostMapping
     public ResponseEntity<Object> createUsuario(@RequestBody NuevoUsuarioRequest usuarioRequest)
             throws UsuarioExistenteException {
         Usuario result = usuarioService.createUsuario(usuarioRequest.getNombre(), usuarioRequest.getApellido(), usuarioRequest.getMail(), usuarioRequest.getContrasena(), usuarioRequest.getDireccion(), usuarioRequest.getUsername());
         return ResponseEntity.created(URI.create("/usuarios/" + result.getId())).body(result);
     }
+*/
 
     @PostMapping("/login")
     public ResponseEntity<Object> loginUsuario(@RequestBody LoginUsuarioRequest usuarioRequest)
@@ -58,6 +59,7 @@ public class UsuariosController {
         return ResponseEntity.created(URI.create("/usuarios/login/" + result)).body(result);
     }
 
+    // hacer que este metodo sea privado
     @PutMapping
     public ResponseEntity<Object> modifyUsuario(@RequestBody ModificarUsuarioRequest usuarioRequest) throws UsuarioInexistenteException{
         Usuario result = usuarioService.modifyUsuario(usuarioRequest.getId(), usuarioRequest.getNombre(), usuarioRequest.getApellido(), usuarioRequest.getMail(), usuarioRequest.getContrasena(), usuarioRequest.getDireccion(), usuarioRequest.getUsername());

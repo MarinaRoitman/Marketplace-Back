@@ -12,5 +12,4 @@ import com.example.shoppear.marketplace.entity.Usuario;
 public interface UsuarioRepository  extends JpaRepository<Usuario, Long> {
     //List<Usuario> findById(String Id);
     List<Usuario> findByMail(String mail);
-    //Optional<Usuario> findUsuarioByMail(String mail);
 }

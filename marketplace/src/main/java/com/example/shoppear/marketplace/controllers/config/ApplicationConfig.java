@@ -1,5 +1,7 @@
 package com.example.shoppear.marketplace.controllers.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.example.shoppear.marketplace.entity.Usuario;
 import com.example.shoppear.marketplace.repository.UsuarioRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -22,8 +25,12 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> repository.findByMail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        return username -> {
+            List<Usuario> usuarios = repository.findByMail(username);
+            return usuarios.stream()
+                    .findFirst()
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        };
     }
 
     @Bean
