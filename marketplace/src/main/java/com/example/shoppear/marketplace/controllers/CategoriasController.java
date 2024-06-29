@@ -15,6 +15,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,17 +28,20 @@ public class CategoriasController {
     @Autowired
     private CategoriaService categoriaService;
 
+    @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping
     public ResponseEntity<List<Categoria>> getCategorias() {
         return ResponseEntity.ok(categoriaService.getCategorias());
     }
 
+    @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping("/{categoryId}")
     public ResponseEntity<Optional<Categoria>> getCategoryById(@PathVariable Long categoryId) throws CategoriaInexistenteException {
         return ResponseEntity.ok(categoriaService.getCategoriaById(categoryId));
     }
 
     // hacer que este metodo sea privado
+    @CrossOrigin (origins = "http://localhost:5173")
     @PostMapping
     public ResponseEntity<Object> createCategoria(@RequestBody CategoriaRequest categoriaRequest)
             throws CategoriaDuplicadaException {

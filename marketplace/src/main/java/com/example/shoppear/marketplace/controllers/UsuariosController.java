@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,11 +31,13 @@ public class UsuariosController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping
     public ResponseEntity<List<Usuario>> getUsuarios() {
         return ResponseEntity.ok(usuarioService.getUsuarios());
     }
 
+    @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping("/{usuarioId}")
     public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long usuarioId) throws UsuarioInexistenteException {
         Optional<Usuario> result = usuarioService.getUsuarioById(usuarioId);
@@ -51,7 +54,7 @@ public class UsuariosController {
         return ResponseEntity.created(URI.create("/usuarios/" + result.getId())).body(result);
     }
 */
-
+    @CrossOrigin (origins = "http://localhost:5173")
     @PostMapping("/login")
     public ResponseEntity<Object> loginUsuario(@RequestBody LoginUsuarioRequest usuarioRequest)
             throws UsuarioLoginNoExitosoException {
@@ -60,6 +63,7 @@ public class UsuariosController {
     }
 
     // hacer que este metodo sea privado
+    @CrossOrigin (origins = "http://localhost:5173")
     @PutMapping
     public ResponseEntity<Object> modifyUsuario(@RequestBody ModificarUsuarioRequest usuarioRequest) throws UsuarioInexistenteException{
         Usuario result = usuarioService.modifyUsuario(usuarioRequest.getId(), usuarioRequest.getNombre(), usuarioRequest.getApellido(), usuarioRequest.getMail(), usuarioRequest.getContrasena(), usuarioRequest.getDireccion(), usuarioRequest.getUsername());

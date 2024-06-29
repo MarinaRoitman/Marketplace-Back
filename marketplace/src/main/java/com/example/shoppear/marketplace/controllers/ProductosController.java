@@ -47,7 +47,7 @@ public class ProductosController {
     @Autowired
     private ProductoService productoService;
 
-
+    @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping
     public ResponseEntity<List<ProductoResponse>> getProductosActivos() throws SQLException {
         List<Producto> prods = productoService.getProductosActivos();
@@ -65,6 +65,7 @@ public class ProductosController {
         return ResponseEntity.ok().body(prodsDto);
     }
 
+    @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping("{id}")
     public ResponseEntity<ProductoResponse> getProductoById(@PathVariable Long id) throws ProductoInexistenteException, SQLException {
         Optional<Producto> productoOptional = productoService.getProductoById(id);
@@ -85,6 +86,7 @@ public class ProductosController {
     }
 
     // hacer que este metodo sea privado
+    @CrossOrigin (origins = "http://localhost:5173")
     @PostMapping("/img")
     public String addImagePost(AgregarArchivoRequest request) throws IOException, SerialException, SQLException, ProductoInexistenteException {
         byte[] bytes = request.getFile().getBytes();
@@ -93,7 +95,7 @@ public class ProductosController {
         return (creado ? "created" : "error");
     }
 
-    @CrossOrigin
+    @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping("/img/{id}")
     public ResponseEntity<ImageResponse> displayImage(@PathVariable Long id) throws IOException, SQLException, ProductoNoImgException, ProductoInexistenteException {
         Optional<Producto> producto = productoService.getProductoById(id);
@@ -112,6 +114,7 @@ public class ProductosController {
 
 
     // hacer que este metodo sea privado
+    @CrossOrigin (origins = "http://localhost:5173")
     @DeleteMapping
     public ResponseEntity<Object> deleteProducto(@RequestParam(name = "idProducto") Long idProducto) throws ProductoInexistenteException{
         //Hace baja logica del producto, no lo borra realmente
@@ -120,6 +123,7 @@ public class ProductosController {
     }
 
     // hacer que este metodo sea privado
+    @CrossOrigin (origins = "http://localhost:5173")
     @PostMapping
     public ResponseEntity<Object> createProducto(@RequestBody NuevoProductoRequest productoRequest) throws ProductoNoSePudoCrearException, SQLException{
         Producto p = productoService.createProducto(productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), productoRequest.getImg(), productoRequest.getStock(), productoRequest.getIdCategoria(), productoRequest.getDescuento(), productoRequest.getIdUsuario());
@@ -133,6 +137,7 @@ public class ProductosController {
     }
 
     // hacer que este metodo sea privado
+    @CrossOrigin (origins = "http://localhost:5173")
     @PutMapping("/{id}")
     public ResponseEntity<Object> modifyProducto(@RequestBody ModificarProductoRequest productoRequest) throws ProductoInexistenteException, CategoriaInexistenteException, SQLException{
         Producto result = productoService.modifyProducto(productoRequest.getId(), productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), productoRequest.getImg(), productoRequest.getStock(), productoRequest.getIdCategoria());
@@ -146,6 +151,7 @@ public class ProductosController {
     }
 
     // hacer que este metodo sea privado
+    @CrossOrigin (origins = "http://localhost:5173")
     @PutMapping("/descuento/{id}")
     public ResponseEntity<Object> modifyDescuento(@RequestBody ModificarDescuentoRequest productoRequest) throws ProductoInexistenteException, SQLException{
         Producto result = productoService.modifyDescuento(productoRequest.getId(), productoRequest.getDescuento());
@@ -157,6 +163,7 @@ public class ProductosController {
         return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(ProductoResponse.builder().id(result.getId()).nombre(result.getNombre()).descripcion(result.getDescripcion()).precio(result.getPrecio()).img(img).stock(result.getStock()).idCategoria(result.getCategoria().getId()).descuento(result.getDescuento()).creadorUsername(result.getUsuario().getUsername()).activo(result.isActivo()).build());
     }
 
+    @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping("/usuario/{idUsuario}")
     public ResponseEntity<List<ProductoResponse>> getProductosPorUsuario(@PathVariable Long idUsuario) throws ListadoVacioException, UsuarioInexistenteException, SQLException {
         List<Producto> prods = productoService.getProductosByUsuario(idUsuario);
@@ -173,6 +180,7 @@ public class ProductosController {
         return ResponseEntity.ok().body(prodsDto);
     }
 
+    @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping("/categoria/{idCategoria}")
     public ResponseEntity<List<ProductoResponse>> getProductosPorCategoria(@PathVariable Long idCategoria) throws ListadoVacioException, CategoriaInexistenteException, SQLException {
         List<Producto> prods = productoService.getProductosByCategoria(idCategoria);

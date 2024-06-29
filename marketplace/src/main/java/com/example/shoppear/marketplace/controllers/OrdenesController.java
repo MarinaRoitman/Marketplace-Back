@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,7 @@ public class OrdenesController {
     @Autowired
     private OrdenesService ordenesService;
     
+    @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping
     public ResponseEntity<List<OrdenResponse>> getOrdenes() {
         List<Orden> ordenes = ordenesService.getOrdenes();
@@ -59,6 +61,7 @@ public class OrdenesController {
         return ResponseEntity.ok().body(ordenesDto);
     }
 
+    @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping("/usuario/{usuarioId}")
     public ResponseEntity<List<OrdenResponse>> getOrdenesByIdUsuario(@PathVariable Long usuarioId) throws UsuarioInexistenteException, ListadoVacioException {
         List<Orden> ordenes = ordenesService.getOrdenesByIdUsuario(usuarioId);
@@ -77,6 +80,7 @@ public class OrdenesController {
         return ResponseEntity.ok().body(ordenesDto);
     }
 
+    @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping("{id}")
     public ResponseEntity<OrdenResponse> getOrdenesById(@PathVariable Long id) throws OrdenInexistenteException, ListadoVacioException {
         Optional<Orden> o = ordenesService.getOrdenesById(id);
@@ -94,6 +98,7 @@ public class OrdenesController {
 
 
     // hacer que este metodo sea privado
+    @CrossOrigin (origins = "http://localhost:5173")
     @PostMapping
     public ResponseEntity<Object> createOrden(@RequestBody OrdenRequest ordenRequest) throws UsuarioInexistenteException, ProductoInexistenteException, CategoriaInexistenteException, SinStockException{
         Orden o = ordenesService.createOrden(ordenRequest.getIdUsuario(), ordenRequest.getDetalleProds(), ordenRequest.getDireccionFactura(), ordenRequest.getTipoPago(), ordenRequest.getNumeroTarjeta());
