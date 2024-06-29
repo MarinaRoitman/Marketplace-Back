@@ -29,19 +29,19 @@ public class AuthenticationService {
         
         public AuthenticationResponse register(NuevoUsuarioRequest request) {
                 var user = Usuario.builder()
-                                .nombre(request.getNombre())
-                                .apellido(request.getApellido())
-                                .mail(request.getMail())
-                                .contrasena(passwordEncoder.encode(request.getContrasena()))
-                                .direccion(request.getDireccion())
-                                .username(request.getUsername())
-                                .build();
+                        .nombre(request.getNombre())
+                        .apellido(request.getApellido())
+                        .mail(request.getMail())
+                        .contrasena(passwordEncoder.encode(request.getContrasena()))
+                        .direccion(request.getDireccion())
+                        .username(request.getUsername())
+                        .build();
 
                 repository.save(user);
                 var jwtToken = jwtService.generateToken(user);
                 return AuthenticationResponse.builder()
-                                .accessToken(jwtToken)
-                                .build();
+                        .accessToken(jwtToken)
+                        .build();
         }
 
         public AuthenticationResponse authenticate(AuthenticationRequest request) {
