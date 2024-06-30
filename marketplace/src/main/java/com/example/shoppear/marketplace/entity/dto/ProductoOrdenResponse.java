@@ -11,7 +11,7 @@ public class ProductoOrdenResponse {
     private String nombre;
     private String descripcion;
     private float precio;
-    private Blob img;
+    private String img;
     private float descuento;
     private String creadorUsername;
     private int cantidad;

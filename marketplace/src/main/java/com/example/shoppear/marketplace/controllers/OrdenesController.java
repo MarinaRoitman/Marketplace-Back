@@ -1,7 +1,9 @@
 package com.example.shoppear.marketplace.controllers;
 
 import java.net.URI;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +45,7 @@ public class OrdenesController {
     
     @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping
-    public ResponseEntity<List<OrdenResponse>> getOrdenes() {
+    public ResponseEntity<List<OrdenResponse>> getOrdenes() throws SQLException {
         List<Orden> ordenes = ordenesService.getOrdenes();
         List<OrdenResponse> ordenesDto = new ArrayList<OrdenResponse>();
         for(Orden o : ordenes){
@@ -52,7 +54,11 @@ public class OrdenesController {
 
             List<ProductoOrdenResponse> prods = new ArrayList<ProductoOrdenResponse>();
             for(OrdenProducto op : o.getOrdenProducto()){
-                ProductoOrdenResponse poResponse = ProductoOrdenResponse.builder().id(op.getProducto().getId()).nombre(op.getProducto().getNombre()).descripcion(op.getProducto().getDescripcion()).precio(op.getPrecioPagado()).img(op.getProducto().getImg()).descuento(op.getDctoAplicado()).creadorUsername(op.getProducto().getUsuario().getUsername()).cantidad(op.getCantidad()).build();
+                String img = null;
+                if (op.getProducto().getImg() != null) {
+                    img = Base64.getEncoder().encodeToString(op.getProducto().getImg().getBytes(1, (int) op.getProducto().getImg().length()));
+                }
+                ProductoOrdenResponse poResponse = ProductoOrdenResponse.builder().id(op.getProducto().getId()).nombre(op.getProducto().getNombre()).descripcion(op.getProducto().getDescripcion()).precio(op.getPrecioPagado()).img(img).descuento(op.getDctoAplicado()).creadorUsername(op.getProducto().getUsuario().getUsername()).cantidad(op.getCantidad()).build();
                 prods.add(poResponse);
             }
             ordenesDto.add(OrdenResponse.builder().id(o.getId()).comprador(uoResponse).productos(prods).fecha(o.getFecha()).datosFacturacion(facturacionResponse).build());
@@ -63,7 +69,7 @@ public class OrdenesController {
 
     @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<OrdenResponse>> getOrdenesByIdUsuario(@PathVariable Long usuarioId) throws UsuarioInexistenteException, ListadoVacioException {
+    public ResponseEntity<List<OrdenResponse>> getOrdenesByIdUsuario(@PathVariable Long usuarioId) throws UsuarioInexistenteException, ListadoVacioException, SQLException {
         List<Orden> ordenes = ordenesService.getOrdenesByIdUsuario(usuarioId);
         List<OrdenResponse> ordenesDto = new ArrayList<OrdenResponse>();
         for(Orden o : ordenes){
@@ -72,7 +78,11 @@ public class OrdenesController {
             
             List<ProductoOrdenResponse> prods = new ArrayList<ProductoOrdenResponse>();
             for(OrdenProducto op : o.getOrdenProducto()){
-                ProductoOrdenResponse poResponse = ProductoOrdenResponse.builder().id(op.getProducto().getId()).nombre(op.getProducto().getNombre()).descripcion(op.getProducto().getDescripcion()).precio(op.getPrecioPagado()).img(op.getProducto().getImg()).descuento(op.getDctoAplicado()).creadorUsername(op.getProducto().getUsuario().getUsername()).cantidad(op.getCantidad()).build();
+                String img = null;
+                if (op.getProducto().getImg() != null) {
+                    img = Base64.getEncoder().encodeToString(op.getProducto().getImg().getBytes(1, (int) op.getProducto().getImg().length()));
+                }
+                ProductoOrdenResponse poResponse = ProductoOrdenResponse.builder().id(op.getProducto().getId()).nombre(op.getProducto().getNombre()).descripcion(op.getProducto().getDescripcion()).precio(op.getPrecioPagado()).img(img).descuento(op.getDctoAplicado()).creadorUsername(op.getProducto().getUsuario().getUsername()).cantidad(op.getCantidad()).build();
                 prods.add(poResponse);
             }
             ordenesDto.add(OrdenResponse.builder().id(o.getId()).comprador(uoResponse).productos(prods).fecha(o.getFecha()).datosFacturacion(facturacionResponse).build());
@@ -82,14 +92,18 @@ public class OrdenesController {
 
     @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping("{id}")
-    public ResponseEntity<OrdenResponse> getOrdenesById(@PathVariable Long id) throws OrdenInexistenteException, ListadoVacioException {
+    public ResponseEntity<OrdenResponse> getOrdenesById(@PathVariable Long id) throws OrdenInexistenteException, ListadoVacioException, SQLException {
         Optional<Orden> o = ordenesService.getOrdenesById(id);
         UsuarioOrdenResponse uoResponse = UsuarioOrdenResponse.builder().id(o.get().getUsuario().getId()).usernamePedido(o.get().getUsuario().getUsername()).nombrePedido(o.get().getUsuario().getNombre()).apellidoPedido(o.get().getUsuario().getApellido()).build();
         FacturacionResponse facturacionResponse = FacturacionResponse.builder().direccionFactura(o.get().getDireccionFactura()).ultDigitos("*".concat(o.get().getMedioDePago().getNumero().substring(o.get().getMedioDePago().getNumero().length()-4))).tipoTarjeta(o.get().getMedioDePago().getTipo()).build();
 
         List<ProductoOrdenResponse> prods = new ArrayList<ProductoOrdenResponse>();
         for(OrdenProducto op : o.get().getOrdenProducto()){
-            ProductoOrdenResponse poResponse = ProductoOrdenResponse.builder().id(op.getProducto().getId()).nombre(op.getProducto().getNombre()).descripcion(op.getProducto().getDescripcion()).precio(op.getPrecioPagado()).img(op.getProducto().getImg()).descuento(op.getDctoAplicado()).creadorUsername(op.getProducto().getUsuario().getUsername()).cantidad(op.getCantidad()).build();
+            String img = null;
+            if (op.getProducto().getImg() != null) {
+                img = Base64.getEncoder().encodeToString(op.getProducto().getImg().getBytes(1, (int) op.getProducto().getImg().length()));
+            }
+            ProductoOrdenResponse poResponse = ProductoOrdenResponse.builder().id(op.getProducto().getId()).nombre(op.getProducto().getNombre()).descripcion(op.getProducto().getDescripcion()).precio(op.getPrecioPagado()).img(img).descuento(op.getDctoAplicado()).creadorUsername(op.getProducto().getUsuario().getUsername()).cantidad(op.getCantidad()).build();
             prods.add(poResponse);
         }
         OrdenResponse ordenDto = OrdenResponse.builder().id(o.get().getId()).comprador(uoResponse).productos(prods).fecha(o.get().getFecha()).datosFacturacion(facturacionResponse).build();
@@ -100,7 +114,7 @@ public class OrdenesController {
     // hacer que este metodo sea privado
     @CrossOrigin (origins = "http://localhost:5173")
     @PostMapping
-    public ResponseEntity<Object> createOrden(@RequestBody OrdenRequest ordenRequest) throws UsuarioInexistenteException, ProductoInexistenteException, CategoriaInexistenteException, SinStockException{
+    public ResponseEntity<Object> createOrden(@RequestBody OrdenRequest ordenRequest) throws UsuarioInexistenteException, ProductoInexistenteException, CategoriaInexistenteException, SinStockException, SQLException{       
         Orden o = ordenesService.createOrden(ordenRequest.getIdUsuario(), ordenRequest.getDetalleProds(), ordenRequest.getDireccionFactura(), ordenRequest.getTipoPago(), ordenRequest.getNumeroTarjeta());
         
         UsuarioOrdenResponse uoResponse = UsuarioOrdenResponse.builder().id(o.getUsuario().getId()).usernamePedido(o.getUsuario().getUsername()).nombrePedido(o.getUsuario().getNombre()).apellidoPedido(o.getUsuario().getApellido()).build();
@@ -108,7 +122,11 @@ public class OrdenesController {
 
         List<ProductoOrdenResponse> prods = new ArrayList<ProductoOrdenResponse>();
         for(OrdenProducto op : o.getOrdenProducto()){
-            ProductoOrdenResponse poResponse = ProductoOrdenResponse.builder().id(op.getProducto().getId()).nombre(op.getProducto().getNombre()).descripcion(op.getProducto().getDescripcion()).precio(op.getPrecioPagado()).img(op.getProducto().getImg()).descuento(op.getDctoAplicado()).creadorUsername(op.getProducto().getUsuario().getUsername()).cantidad(op.getCantidad()).build();
+            String img = null;
+            if (op.getProducto().getImg() != null) {
+                img = Base64.getEncoder().encodeToString(op.getProducto().getImg().getBytes(1, (int) op.getProducto().getImg().length()));
+            }
+            ProductoOrdenResponse poResponse = ProductoOrdenResponse.builder().id(op.getProducto().getId()).nombre(op.getProducto().getNombre()).descripcion(op.getProducto().getDescripcion()).precio(op.getPrecioPagado()).img(img).descuento(op.getDctoAplicado()).creadorUsername(op.getProducto().getUsuario().getUsername()).cantidad(op.getCantidad()).build();
             prods.add(poResponse);
         }
         
