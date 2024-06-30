@@ -120,7 +120,7 @@ public class ProductoServiceImpl implements ProductoService{
     @Override
     public List<Producto> getProductosByUsuario(Long idUsuario) throws ListadoVacioException, UsuarioInexistenteException {
         Optional<Usuario> user = usuarioService.getUsuarioById(idUsuario);
-        List<Producto> productos = productoRepository.findByUsuario(user);
+        List<Producto> productos = productoRepository.findByUsuarioAndActivoTrue(user);
         if(productos.size() > 0){
             return productos;
         }else{
