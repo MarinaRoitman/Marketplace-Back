@@ -17,5 +17,7 @@ public interface UsuarioService {
 
     public Optional <Usuario> getUsuarioById(Long id) throws UsuarioInexistenteException;
 
+    public List <Usuario> getUsuarioByMail(String mail) throws UsuarioInexistenteException;
+
     public Long loginUsuario (String mail, String contrasena) throws UsuarioLoginNoExitosoException;
 }

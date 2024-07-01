@@ -48,6 +48,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public List<Usuario> getUsuarioByMail(String mail) throws UsuarioInexistenteException {
+        return usuarioRepository.findByMail(mail);
+    }
+
+    @Override
     public Long loginUsuario(String mail, String contrasena) throws UsuarioLoginNoExitosoException {
         mail = mail.toLowerCase();
         List<Usuario> usuarios = usuarioRepository.findByMail(mail);

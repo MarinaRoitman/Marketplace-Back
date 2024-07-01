@@ -46,6 +46,16 @@ public class UsuariosController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @CrossOrigin (origins = "http://localhost:5173")
+    @GetMapping("/mail/{usuariomail}")
+    public ResponseEntity<Usuario> getUsuarioByMail(@PathVariable String usuariomail) throws UsuarioInexistenteException {
+        List<Usuario> result = usuarioService.getUsuarioByMail(usuariomail);
+        if (result.size() > 0)
+            return ResponseEntity.ok(result.get(0));
+
+        return ResponseEntity.noContent().build();
+    }
 /* saco este endpoint porque el authenticationController se encarga de la creación de usuarios
     @PostMapping
     public ResponseEntity<Object> createUsuario(@RequestBody NuevoUsuarioRequest usuarioRequest)
