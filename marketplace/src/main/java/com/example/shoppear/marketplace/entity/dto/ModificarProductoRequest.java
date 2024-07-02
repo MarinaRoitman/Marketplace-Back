@@ -8,7 +8,7 @@ public class ModificarProductoRequest {
     private String nombre;
     private String descripcion;
     private float precio;
-    private Blob img;
+    private String img;
     private int stock;
     private Long idCategoria;
 }

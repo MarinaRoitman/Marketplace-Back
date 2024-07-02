@@ -126,28 +126,47 @@ public class ProductosController {
     @CrossOrigin (origins = "http://localhost:5173")
     @PostMapping
     public ResponseEntity<Object> createProducto(@RequestBody NuevoProductoRequest productoRequest) throws ProductoNoSePudoCrearException, SQLException{
-        Producto p = productoService.createProducto(productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), productoRequest.getImg(), productoRequest.getStock(), productoRequest.getIdCategoria(), productoRequest.getDescuento(), productoRequest.getIdUsuario());
-        String img = null;
-        if (p.getImg() != null) {
-            img = Base64.getEncoder().encodeToString(p.getImg().getBytes(1, (int) p.getImg().length()));
+        Blob img = null;
+        if (productoRequest.getImg() != null) {
+            byte[] imgBytes = Base64.getDecoder().decode(productoRequest.getImg());
+            try {
+                img = new javax.sql.rowset.serial.SerialBlob(imgBytes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
+        Producto p = productoService.createProducto(productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), img, productoRequest.getStock(), productoRequest.getIdCategoria(), productoRequest.getDescuento(), productoRequest.getIdUsuario());
         
-        return ResponseEntity.created(URI.create("/productos/" + p.getId())).body(ProductoResponse.builder().id(p.getId()).nombre(p.getNombre()).descripcion(p.getDescripcion()).precio(p.getPrecio()).img(img).stock(p.getStock()).idCategoria(p.getCategoria().getId()).descuento(p.getDescuento()).creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
+        return ResponseEntity.created(URI.create("/productos/" + p.getId())).body(ProductoResponse.builder()
+                                                                                                    .id(p.getId())
+                                                                                                    .nombre(p.getNombre())
+                                                                                                    .descripcion(p.getDescripcion())
+                                                                                                    .precio(p.getPrecio())
+                                                                                                    .img(productoRequest.getImg())
+                                                                                                    .stock(p.getStock())
+                                                                                                    .idCategoria(p.getCategoria()
+                                                                                                    .getId())
+                                                                                                    .descuento(p.getDescuento())
+                                                                                                    .creadorUsername(p.getUsuario().getUsername()).activo(p.isActivo()).build());
     }
 
     // hacer que este metodo sea privado
     @CrossOrigin (origins = "http://localhost:5173")
     @PutMapping("/{id}")
     public ResponseEntity<Object> modifyProducto(@RequestBody ModificarProductoRequest productoRequest) throws ProductoInexistenteException, CategoriaInexistenteException, SQLException{
-        Producto result = productoService.modifyProducto(productoRequest.getId(), productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), productoRequest.getImg(), productoRequest.getStock(), productoRequest.getIdCategoria());
-        String img = null;
-        if (result.getImg() != null) {
-            img = Base64.getEncoder().encodeToString(result.getImg().getBytes(1, (int) result.getImg().length()));
+        Blob img = null;
+        if (productoRequest.getImg() != null) {
+            byte[] imgBytes = Base64.getDecoder().decode(productoRequest.getImg());
+            try {
+                img = new javax.sql.rowset.serial.SerialBlob(imgBytes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
-        
-        return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(ProductoResponse.builder().id(result.getId()).nombre(result.getNombre()).descripcion(result.getDescripcion()).precio(result.getPrecio()).img(img).stock(result.getStock()).idCategoria(result.getCategoria().getId()).descuento(result.getDescuento()).creadorUsername(result.getUsuario().getUsername()).activo(result.isActivo()).build());
+        Producto result = productoService.modifyProducto(productoRequest.getId(), productoRequest.getNombre(), productoRequest.getDescripcion(), productoRequest.getPrecio(), img, productoRequest.getStock(), productoRequest.getIdCategoria());
+
+        return ResponseEntity.created(URI.create("/productos/" + result.getId())).body(ProductoResponse.builder().id(result.getId()).nombre(result.getNombre()).descripcion(result.getDescripcion()).precio(result.getPrecio()).img(productoRequest.getImg()).stock(result.getStock()).idCategoria(result.getCategoria().getId()).descuento(result.getDescuento()).creadorUsername(result.getUsuario().getUsername()).activo(result.isActivo()).build());
     }
 
     // hacer que este metodo sea privado
