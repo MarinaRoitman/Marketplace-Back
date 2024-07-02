@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.shoppear.marketplace.entity.Usuario;
@@ -13,16 +14,19 @@ import com.example.shoppear.marketplace.exceptions.UsuarioInexistenteException;
 import com.example.shoppear.marketplace.exceptions.UsuarioLoginNoExitosoException;
 import com.example.shoppear.marketplace.repository.UsuarioRepository;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
-
+    private final PasswordEncoder passwordEncoder;
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     public List<Usuario> getUsuarios() {
         return usuarioRepository.findAll();
     }
-
+    
     public Usuario createUsuario(String nombre, String apellido, String mail, String contrasena, String direccion, String username) throws UsuarioExistenteException {
         mail = mail.toLowerCase();
         List<Usuario> usuarios = usuarioRepository.findByMail(mail);
@@ -31,14 +35,14 @@ public class UsuarioServiceImpl implements UsuarioService {
             return usuarioRepository.save(new Usuario(nombre, apellido, mail, contrasenaHash, direccion, username));
         throw new UsuarioExistenteException();
     }
-
+        
     @Override
     public Usuario modifyUsuario(Long id, String nombre, String apellido, String mail, String contrasena, String direccion, String username) throws UsuarioInexistenteException {
         mail = mail.toLowerCase();
         List<Usuario> usuarios = usuarioRepository.findByMail(mail);
-        String contrasenaHash = DigestUtils.md5Hex(contrasena);
+        
         if (usuarios.size() == 1)
-            return usuarioRepository.save(new Usuario(id, nombre, apellido, mail, contrasenaHash, direccion, username));
+            return usuarioRepository.save(new Usuario(id, nombre, apellido, mail, passwordEncoder.encode(contrasena), direccion, username));
         throw new UsuarioInexistenteException();
     }
 
