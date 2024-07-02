@@ -184,9 +184,18 @@ public class ProductosController {
 
     @CrossOrigin (origins = "http://localhost:5173")
     @GetMapping("/usuario/{idUsuario}")
-    public ResponseEntity<List<ProductoResponse>> getProductosPorUsuario(@PathVariable Long idUsuario) throws ListadoVacioException, UsuarioInexistenteException, SQLException {
-        List<Producto> prods = productoService.getProductosByUsuario(idUsuario);
+    public ResponseEntity<List<ProductoResponse>> getProductosPorUsuario(@PathVariable Long idUsuario) throws UsuarioInexistenteException, SQLException {
+        List<Producto> prods;
+        try {
+            prods = productoService.getProductosByUsuario(idUsuario);
+        } catch (ListadoVacioException e) {
+            return ResponseEntity.ok().body(new ArrayList<ProductoResponse>());
+        }
+
         List<ProductoResponse> prodsDto = new ArrayList<ProductoResponse>();
+
+        
+
         for(Producto p : prods){
             String img = null;
             if (p.getImg() != null) {
