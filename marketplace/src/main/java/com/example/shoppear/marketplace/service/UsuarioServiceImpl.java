@@ -14,10 +14,13 @@ import com.example.shoppear.marketplace.exceptions.UsuarioInexistenteException;
 import com.example.shoppear.marketplace.exceptions.UsuarioLoginNoExitosoException;
 import com.example.shoppear.marketplace.repository.UsuarioRepository;
 
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioServiceImpl implements UsuarioService {
     private final PasswordEncoder passwordEncoder;
     @Autowired
